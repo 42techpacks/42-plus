@@ -1,0 +1,91 @@
+@font-face {
+    font-family: 'Overpass Mono';
+    src: url('../assets/OverpassMono-Regular.ttf') format('truetype');
+}
+
+.window-card {
+
+    width: 100%;
+
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    color: black;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    box-shadow: -4px 5px 0px 0px rgba(0, 0, 0, 0.15);
+
+}
+
+/* Card Header */
+
+.window-card-header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    box-sizing: border-box;
+    padding: 5px 10px 5px 10px;
+
+    background-color: #121212;
+    border-radius: 5px 5px 0 0;
+
+    color: white;
+}
+
+/* Card Controls */ 
+
+.window-card-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 5px;
+
+}
+
+.circle {
+    width: 10px; 
+    height: 10px; 
+    border-radius: 50%;
+}
+
+.circle:hover {
+    box-shadow: inset 0 0 1px rgb(255, 253, 253);
+}
+
+/* Card Title Text */
+
+.window-card h3 {
+
+    font-family: 'Overpass Mono';
+    text-align: left;
+    font-size: 14px;
+
+}
+
+/* Card Body */
+
+.window-card-body {
+    width: 100%;
+    height: 300px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+}
+
+/* Card Image */
+
+.window-card-body img {
+    width: 70%;
+}

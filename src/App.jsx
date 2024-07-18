@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { supabase } from "./supabaseClient";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 function Countries({ children }) {
   const [countries, setCountries] = useState([]);
@@ -26,7 +26,7 @@ function Countries({ children }) {
 }
 
 Countries.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 function AuthForm() {
@@ -61,7 +61,7 @@ function AuthForm() {
       const { error } = await supabase.auth.verifyOtp({
         phone,
         token: verificationCode,
-        type: 'sms'
+        type: "sms",
       });
       if (error) throw error;
       alert("Successfully verified!");
