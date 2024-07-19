@@ -1,0 +1,27 @@
+.featured-product {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+.featured-product .row-1 {
+    width: 100%;
+}
+
+.featured-product .row-2 {
+    height: 150px;
+    width: 100%;
+    display: flex;
+
+    box-sizing: border-box;
+
+    gap: 10px;
+}
+
+.featured-product .row-3 {
+    height: 150px;
+    width: 100%;
+
+    display: flex;
+}
