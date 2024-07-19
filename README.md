@@ -1,10 +1,38 @@
 # Custom 42+ cause hang cucked us
 
-To run:
+
+## Setup
+
+### Install bun
+
+```bash
+curl -fsSL https://bun.sh/install | bash
 ```
+
+### OR
+
+```bash
+brew tap oven-sh/bun
+brew install bun
+```
+
+### Install dependencies and run:
+
+cd into the directory and run:
+
+```bash
 bun install
 bun run dev
 ```
+
+To run supabase locally:
+
+```bash
+bun add -d supabase
+bunx supabase init
+bunx supabase start
+```
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
