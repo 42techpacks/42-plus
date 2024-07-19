@@ -2,9 +2,15 @@ import React from "react";
 import Card from "./card";
 
 import "./featured-product.css";
-import Button from "./button";
 import CardPreOrder from "./card-preorder";
 import CardGallery from "./card-gallery";
+
+const description = (
+  <p>
+    Fully knit footy-inspired jersey featuring embroidered logo, vertical knit
+    pattern, slight crop...
+  </p>
+);
 
 export default function FeaturedProduct() {
   return (
@@ -15,6 +21,13 @@ export default function FeaturedProduct() {
           img={"../src/assets/colombiaFlatFront.png"}
         ></Card>
       </div>
+      <div className="row-3">
+        <CardPreOrder
+          productName={"Knit Colombia Jersey"}
+          retailPrice={"$86"}
+          preorderPrice={"$42"}
+        ></CardPreOrder>
+      </div>
       <div className="row-2">
         <CardGallery
           imgUrls={[
@@ -23,19 +36,7 @@ export default function FeaturedProduct() {
             "../src/assets/colombia-gallery-1.png",
           ]}
         ></CardGallery>
-        <CardPreOrder
-          productName={"Knit Colombia Jersey"}
-          retailPrice={"$86"}
-          preorderPrice={"$42"}
-        ></CardPreOrder>
-      </div>
-      <div className="row-3">
-        <Card title={"Description"}>
-          <p>
-            Fully knit footy-inspired jersey featuring embroidered logo,
-            vertical knit pattern, slight crop...
-          </p>
-        </Card>
+        <Card title={"Description"}>{description}</Card>
       </div>
     </div>
   );

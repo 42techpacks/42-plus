@@ -27,6 +27,9 @@ export default function CardPreOrder({
           </div>
         </div>
         <Button label={"BUY NOW"} style={"window"}></Button>
+        <span id="preorder-product-shipping-disclaimer">
+          Ships in 8-10 weeks
+        </span>
       </div>
     </Card>
   );

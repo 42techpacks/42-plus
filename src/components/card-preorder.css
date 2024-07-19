@@ -11,7 +11,7 @@ h5, h6 {
 
     gap: 10px;
     width: 100%;
-    height: 100%;
+    height: fit-content;
 }
 
 .card-preorder-header {
@@ -38,4 +38,14 @@ h5, h6 {
 
 #preorder-product-price {
     font-weight: 400;
+}
+
+#preorder-product-shipping-disclaimer {
+    text-align: left;
+    font-size: 0.75em;
+    font-style: italic;
+
+    display: flex;
+    justify-content: left;
+    box-sizing: border-box;
 }

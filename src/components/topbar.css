@@ -5,7 +5,7 @@
     border-top: 1px solid black;
     border-bottom: 1px solid black;
 
-    width: 100%;
+    width: 100vw;
     height: 50px;
     
     padding: 10px;
@@ -24,5 +24,5 @@
 /* 42+ logo */
 
 .topbar-logo {
-    height: 90%;
+    height: 80%;
 }
