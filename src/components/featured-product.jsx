@@ -5,13 +5,6 @@ import "./featured-product.css";
 import CardPreOrder from "./card-preorder";
 import CardGallery from "./card-gallery";
 
-const description = (
-  <p>
-    Fully knit footy-inspired jersey featuring embroidered logo, vertical knit
-    pattern, slight crop...
-  </p>
-);
-
 export default function FeaturedProduct() {
   return (
     <div className="featured-product">
@@ -36,7 +29,12 @@ export default function FeaturedProduct() {
             "../src/assets/colombia-gallery-1.png",
           ]}
         ></CardGallery>
-        <Card title={"Description"}>{description}</Card>
+        <Card title={"Description"}>
+          <p>
+            Fully knit footy-inspured jersey featuring embroidered logo,
+            vertical knit pattern, slight crop.
+          </p>
+        </Card>
       </div>
     </div>
   );

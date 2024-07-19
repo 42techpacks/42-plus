@@ -9,9 +9,7 @@ export default function ScrollingBar({ message }) {
   return (
     <div className="scrolling-bar">
       <div className="scrolling-text">
-        <h5>
-          {message} {message} {message} {message}
-        </h5>
+        <h5>{message}</h5>
       </div>
     </div>
   );

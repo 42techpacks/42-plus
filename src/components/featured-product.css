@@ -29,3 +29,12 @@
 .featured-product .row-3 .window-card-body {
     height: fit-content;
 }
+
+.featured-product .row-2 .window-card .window-card-body {
+    height: 100%;
+}
+
+.featured-product p {
+    margin: 0;
+    font-size: 12px;
+}
