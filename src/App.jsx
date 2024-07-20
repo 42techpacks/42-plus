@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { createContext } from "react";
 import "./App.css";
+import { useSession } from "./hooks/use-session";
+import PropTypes from "prop-types";
 
 /* Component Imports */
 import TopBar from "./components/topbar";
@@ -8,15 +10,26 @@ import ScrollingBar from "./components/scrolling-bar";
 import FAQs from "./components/faqs";
 import Button from "./components/button";
 
+export const UserContext = createContext({
+  session: null,
+  profile: null,
+});
+
 function Layout({ children }) {
+  const fortytwoUserInfo = useSession();
   return (
     <>
-      <TopBar authenticated={false} user={"npcmilo"}></TopBar>
-      <div className="main">{children}</div>
-      <p className="read-the-docs">Developed by TECHPACK</p>
+      <UserContext.Provider value={fortytwoUserInfo}>
+        <TopBar authenticated={false} user={"npcmilo"}></TopBar>
+        <div className="main">{children}</div>
+        <p className="read-the-docs">Developed by TECHPACK</p>
+      </UserContext.Provider>
     </>
   );
 }
+Layout.propTypes = {
+  children: PropTypes.node.isRequired,
+};
 
 function LoginForm() {
   return <>LoginForm</>;

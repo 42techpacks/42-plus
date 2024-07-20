@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { supaClient } from "./supa-client";
+import { supaClient } from "../supa-client";
 
 export function useSession() {
   // State that exposes the session details to the rest of the app
