@@ -1,0 +1,21 @@
+.login-form {
+    width: 100%;
+    height: fit-content;
+}
+
+.login-form .window-card-body {
+    height: fit-content;
+}
+
+.phone-input {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 100%;
+    
+}
+
+.login-form .inputs {
+    display: flex;
+}

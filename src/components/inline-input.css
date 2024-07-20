@@ -1,0 +1,36 @@
+.verify-input {
+    height: 100%;
+    width: 100%;
+    background: none;
+    color: white;
+    border: none;
+    outline: none;
+
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Geist Mono';
+    box-sizing: border-box;
+    padding: 2px 2px 2px 10px;
+    padding: 0;
+
+    font-size: calc(1.5vw + 0.5em);
+}
+
+.inner-verify {
+    transition: box-shadow 0.2s ease-in-out;
+
+    border-radius: 5px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: radial-gradient(86.59% 86.59% at 50% 13.41%, rgba(189, 186, 186, 0.08) 0%, rgba(123, 123, 123, 0.04) 100%);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    height: calc(4vw + 2.25em);
+
+    color: #686868;
+}
