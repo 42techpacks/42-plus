@@ -41,6 +41,25 @@ bunx supabase start
 bun run dev
 ```
 
+### Supabase Workflow
+Commands
+```bash
+# to start the local supabase instance
+bunx supabase start
+
+# to create a new migration with table info
+bunx supabase migration new <insert-name-here>-ddl
+
+# to update local db to have migrations
+bunx supabase db reset
+
+# to stop supabase running
+bunx supabase stop
+```
+
+Url to access local supabase server
+[http://localhost:54323](http://localhost:54323)
+
 ### Legacy README from vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
