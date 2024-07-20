@@ -136,7 +136,7 @@ template = "Your code is {{ .Code }} ."
 max_frequency = "5s"
 
 # Use pre-defined map of phone number to OTP for testing.
-# [auth.sms.test_otp]
+[auth.sms.test_otp]
 3017321380 = "123456"
 4077470791 = "123456"
 
