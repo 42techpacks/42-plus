@@ -2,6 +2,7 @@ import { createContext } from "react";
 import "./App.css";
 import { useSession } from "./hooks/use-session";
 import PropTypes from "prop-types";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 /* Component Imports */
 import TopBar from "./components/topbar";
@@ -11,26 +12,24 @@ import FAQs from "./components/faqs";
 import Button from "./components/button";
 import LoginForm from "./components/login-form";
 
-export const UserContext = createContext({
-  session: null,
-  profile: null,
-});
-
-function Layout({ children }) {
-  const fortytwoUserInfo = useSession();
-  return (
-    <>
-      <UserContext.Provider value={fortytwoUserInfo}>
-        <TopBar></TopBar>
-        <div className="main">{children}</div>
-        <p className="read-the-docs">Developed by TECHPACK</p>
-      </UserContext.Provider>
-    </>
-  );
-}
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <Home />,
+      },
+      {
+        path: "welcome",
+        //TODO: change this, shouldn't be login form
+        element: <LoginForm />,
+        // loader: welcomeLoader,
+      },
+    ],
+  },
+]);
 
 function Home() {
   return (
@@ -48,13 +47,26 @@ function Home() {
 }
 
 function App() {
-  return (
-    <>
-      <Layout>
-        <LoginForm />
-      </Layout>
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
+
+export const UserContext = createContext({
+  session: null,
+  profile: null,
+});
+
+function Layout() {
+  const fortytwoUserInfo = useSession();
+  return (
+    <>
+      <UserContext.Provider value={fortytwoUserInfo}>
+        <TopBar />
+        <Outlet />
+        {/* TODO: This should be a footer component? */}
+        <p className="read-the-docs">Developed by TECHPACK</p>
+      </UserContext.Provider>
+    </>
+  );
+}
