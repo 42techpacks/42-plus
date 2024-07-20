@@ -1,0 +1,53 @@
+.scrolling-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 100vw;
+    height: 42px;
+
+    margin: 20px 0px 20px 0px;
+
+    background-color: white;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+.scrolling-text {
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    
+    animation: scroll-left 10s linear infinite;
+
+}
+
+.scrolling-text h5 {
+    display: flex;
+    height: 15px;
+    width: fit-content;
+
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    font-family: 'Overused Grotesk'; 
+    white-space: nowrap;
+}
+
+/* TO-DO: Fix scrolling bar animation*/
+
+/*
+
+@keyframes scroll-left {
+    0% {
+        transform: translateX(50%);
+    }
+    100% {
+    transform: translateX(-50%);
+    }
+}
+}
+
+*/

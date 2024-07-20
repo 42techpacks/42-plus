@@ -1,0 +1,51 @@
+h5, h6 {
+    margin: 0;
+    font-size: 15px;
+
+    text-align: left;
+}
+
+.card-preorder {
+    display: flex;
+    flex-direction: column;
+
+    gap: 10px;
+    width: 100%;
+    height: fit-content;
+}
+
+.card-preorder-header {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.card-preorder-prices {
+    display: flex;
+    gap: 5px;
+    font-family: 'Overused Grotesk';
+}
+
+#preorder-product-name {
+    font-weight: 500;
+}
+
+#preorder-product-retail-price {
+    font-weight: 400;
+    color: #9C9C9C;
+    text-decoration-line: line-through;
+}
+
+#preorder-product-price {
+    font-weight: 400;
+}
+
+#preorder-product-shipping-disclaimer {
+    text-align: left;
+    font-size: 0.75em;
+    font-style: italic;
+
+    display: flex;
+    justify-content: left;
+    box-sizing: border-box;
+}
