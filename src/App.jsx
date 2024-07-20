@@ -9,6 +9,7 @@ import FeaturedProduct from "./components/featured-product";
 import ScrollingBar from "./components/scrolling-bar";
 import FAQs from "./components/faqs";
 import Button from "./components/button";
+import LoginForm from "./components/login-form";
 
 export const UserContext = createContext({
   session: null,
@@ -20,7 +21,7 @@ function Layout({ children }) {
   return (
     <>
       <UserContext.Provider value={fortytwoUserInfo}>
-        <TopBar authenticated={false} user={"npcmilo"}></TopBar>
+        <TopBar></TopBar>
         <div className="main">{children}</div>
         <p className="read-the-docs">Developed by TECHPACK</p>
       </UserContext.Provider>
@@ -30,14 +31,6 @@ function Layout({ children }) {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
-
-function LoginForm() {
-  return <>LoginForm</>;
-}
-
-function RegisterForm() {
-  return <>RegisterForm</>;
-}
 
 function Home() {
   return (
@@ -58,7 +51,7 @@ function App() {
   return (
     <>
       <Layout>
-        <RegisterForm />
+        <LoginForm />
       </Layout>
     </>
   );

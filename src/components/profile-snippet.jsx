@@ -1,17 +1,13 @@
 import React from "react";
 import "./profile-snippet.css";
 
-ProfileSnippet.defaultProps = {
-  title: "[Insert Title]",
-};
-
-export default function ProfileSnippet({ authenticated, userName }) {
+export default function ProfileSnippet({}) {
   let href = "loginForm";
   let link = "Login";
 
-  if (authenticated) {
+  if (false) {
     href = "userProfile";
-    link = userName;
+    link = "npcmilo";
   }
 
   return (

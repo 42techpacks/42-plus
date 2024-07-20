@@ -2,7 +2,7 @@ import React from "react";
 import "./topbar.css";
 import ProfileSnippet from "./profile-snippet";
 
-export default function TopBar({ authenticated, user }) {
+export default function TopBar({}) {
   return (
     <div className="topbar">
       <img
@@ -12,7 +12,7 @@ export default function TopBar({ authenticated, user }) {
         width="42"
         height="42"
       />
-      <ProfileSnippet authenticated={authenticated} userName={user} />
+      <ProfileSnippet />
     </div>
   );
 }
