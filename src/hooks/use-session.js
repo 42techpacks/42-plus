@@ -19,7 +19,7 @@ export function useSession() {
         setUserInfo({ session, profile: null });
       });
     });
-  });
+  }, []); // Add empty dependency array to run only once
 
   // Effect that we use to update above state internally so we can know in realtime
   //  if a user deletes their profile for example
