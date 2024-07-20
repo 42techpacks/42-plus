@@ -1,6 +1,5 @@
 # Custom 42+ cause hang cucked us
 
-
 ## Setup
 
 ### Install bun
