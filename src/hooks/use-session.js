@@ -14,9 +14,9 @@ export function useSession() {
   // Effect that updates the externally exposed session
   useEffect(() => {
     supaClient.auth.getSession().then(({ data: { session } }) => {
-      setUserInfo({ ...userInfo, session });
+      setUserInfo((prevInfo) => ({ ...prevInfo, session }));
       supaClient.auth.onAuthStateChange((_event, session) => {
-        setUserInfo({ session, profile: null });
+        setUserInfo(() => ({ session, profile: null }));
       });
     });
   }, []); // Add empty dependency array to run only once
