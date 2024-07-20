@@ -24,6 +24,33 @@ export function useSession() {
   // Effect that we use to update above state internally so we can know in realtime
   //  if a user deletes their profile for example
   useEffect(() => {
+    // This function listens to changes in the user_profiles table for a specific user
+    //  and updates the above state
+    const listenToUserProfileChanges = async (userId) => {
+      const { data } = await supaClient
+        .from("user_profiles")
+        .select("*")
+        .filter("user_id", "eq", userId);
+      if (data?.[0]) {
+        setUserInfo((prevInfo) => ({ ...prevInfo, profile: data?.[0] }));
+      }
+      return supaClient
+        .channel(`public:user_profiles`)
+        .on(
+          "postgres_changes",
+          {
+            event: "*",
+            schema: "public",
+            table: "user_profiles",
+            filter: `user_id=eq.${userId}`,
+          },
+          (payload) => {
+            setUserInfo((prevInfo) => ({ ...prevInfo, profile: payload.new }));
+          }
+        )
+        .subscribe();
+    };
+
     if (userInfo.session?.user && !userInfo.profile) {
       listenToUserProfileChanges(userInfo.session.user.id).then(
         (newChannel) => {
@@ -37,34 +64,7 @@ export function useSession() {
       channel?.unsubscribe();
       setChannel(null);
     }
-  }, [userInfo.session]);
-
-  // This function listens to changes in the user_profiles table for a specific user
-  //  and updates the above state
-  async function listenToUserProfileChanges(userId) {
-    const { data } = await supaClient
-      .from("user_profiles")
-      .select("*")
-      .filter("user_id", "eq", userId);
-    if (data?.[0]) {
-      setUserInfo({ ...userInfo, profile: data?.[0] });
-    }
-    return supaClient
-      .channel(`public:user_profiles`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "user_profiles",
-          filter: `user_id=eq.${userId}`,
-        },
-        (payload) => {
-          setUserInfo({ ...userInfo, profile: payload.new });
-        }
-      )
-      .subscribe();
-  }
+  }, [userInfo.session, userInfo.profile, channel]);
 
   return userInfo;
 }
