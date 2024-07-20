@@ -55,6 +55,9 @@ bunx supabase db reset
 
 # to stop supabase running
 bunx supabase stop
+
+# to generate typing
+bunx supabase gen types typescript --local > ./src/database.types.ts
 ```
 
 Url to access local supabase server
