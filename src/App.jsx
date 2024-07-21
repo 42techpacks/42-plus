@@ -1,17 +1,17 @@
 import { createContext } from "react";
+import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { useSession } from "./hooks/use-session";
-import PropTypes from "prop-types";
-import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
 
 /* Component Imports */
-import TopBar from "./components/topbar";
-import FeaturedProduct from "./components/featured-product";
-import ScrollingBar from "./components/scrolling-bar";
-import FAQs from "./components/faqs";
 import Button from "./components/button";
-import LoginForm from "./components/login-form";
+import FAQs from "./components/faqs";
+import FeaturedProduct from "./components/featured-product";
 import Footer from "./components/footer";
+import LoginForm from "./components/login-form";
+import { registerFormLoader } from "./components/register-form";
+import ScrollingBar from "./components/scrolling-bar";
+import TopBar from "./components/topbar";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +26,7 @@ const router = createBrowserRouter([
         path: "",
         //TODO: change this, shouldn't be login form
         element: <LoginForm />,
-        // loader: welcomeLoader,
+        loader: registerFormLoader,
       },
     ],
   },

@@ -1,7 +1,17 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 
+// function to set the return path in local storage
+// so we can redirect the user back to the page they were on
+// when they were redirected to the register page
+export const setReturnPath = () => {
+  localStorage.setItem("returnPath", window.location.pathname);
+};
+
 export function useSession() {
+  const navigate = useNavigate();
+
   // State that exposes the session details to the rest of the app
   const [userInfo, setUserInfo] = useState({
     profile: null,
@@ -32,8 +42,15 @@ export function useSession() {
         .select("*")
         .filter("user_id", "eq", userId);
       if (data?.[0]) {
+        // profile found, update the state rest of app uses with it
         setUserInfo((prevInfo) => ({ ...prevInfo, profile: data?.[0] }));
+      } else {
+        // profile not found, navigate the user to the welcome page
+        navigate("/welcome");
       }
+
+      // set up a real-time subscription to listen for  changes in the user_profiles table
+      // we return this so we can unsubscribe when we're done
       return supaClient
         .channel(`public:user_profiles`)
         .on(
