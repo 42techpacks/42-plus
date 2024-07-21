@@ -9,6 +9,7 @@ import FAQs from "./components/faqs";
 import FeaturedProduct from "./components/featured-product";
 import Footer from "./components/footer";
 import LoginForm from "./components/login-form";
+import LoginRegister from "./components/login-register";
 import { registerFormLoader } from "./components/register-form";
 import ScrollingBar from "./components/scrolling-bar";
 import TopBar from "./components/topbar";
@@ -19,11 +20,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "/welcome",
-        element: <Home />,
+        path: "",
+        element: <LoginRegister toggle={"login"} />,
       },
       {
-        path: "",
+        path: "/login",
         //TODO: change this, shouldn't be login form
         element: <LoginForm />,
         loader: registerFormLoader,

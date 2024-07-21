@@ -1,10 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./card";
-import { useState } from "react";
 
-import "./login-form.css";
-import Input from "./input";
 import Button from "./button";
+import Input from "./input";
+import "./login-form.css";
 
 export default function LoginForm() {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
@@ -93,9 +92,6 @@ export default function LoginForm() {
   return (
     <form className="login-form">
       <Card title={"Login"}>{flowStep1}</Card>
-      <p>
-        Don't have an account? <a>Register.</a>
-      </p>
     </form>
   );
 }
