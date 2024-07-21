@@ -20,7 +20,7 @@ const Input = ({
             <input
               className="phone-input"
               id="country-input"
-              maxLength="3"
+              maxLength="4"
               defaultValue="+1"
             />
           </div>
@@ -29,7 +29,7 @@ const Input = ({
         {/* Number inputs and Title */}
         <div className="outer">
           {/* Title */}
-          {title && <h4>{title}</h4>}
+          {title && <h7>{title}</h7>}
 
           {/* Number Inputs */}
           <div className="outer-phone">
@@ -73,13 +73,13 @@ const Input = ({
     return (
       <div id="phone-container">
         {/* Number inputs and Title */}
-        <div className="outer">
+        <div className="outer outer-otp">
           {/* Title */}
-          {title && <h4>Enter Code</h4>}
+          {title && <h7>Enter Code</h7>}
 
           {/* Number Inputs */}
           <div
-            className="outer-phone"
+            className="outer-phone outer-phone-otp"
             onChange={() => {
               const allInputs = Array.from(
                 document.querySelectorAll(

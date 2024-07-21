@@ -11,6 +11,7 @@ import ScrollingBar from "./components/scrolling-bar";
 import FAQs from "./components/faqs";
 import Button from "./components/button";
 import LoginForm from "./components/login-form";
+import Footer from "./components/footer";
 
 const router = createBrowserRouter([
   {
@@ -18,11 +19,11 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       {
-        path: "",
+        path: "/welcome",
         element: <Home />,
       },
       {
-        path: "welcome",
+        path: "",
         //TODO: change this, shouldn't be login form
         element: <LoginForm />,
         // loader: welcomeLoader,
@@ -63,9 +64,10 @@ function Layout() {
     <>
       <UserContext.Provider value={fortytwoUserInfo}>
         <TopBar />
-        <Outlet />
-        {/* TODO: This should be a footer component? */}
-        <p className="read-the-docs">Developed by TECHPACK</p>
+        <div className="main">
+          <Outlet />
+        </div>
+        <Footer></Footer>
       </UserContext.Provider>
     </>
   );

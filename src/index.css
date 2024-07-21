@@ -48,3 +48,13 @@ h1 {
     color: #747bff;
   }
 }
+
+input {
+  font-family: 'Overused Grotesk';
+}
+
+input:focus {
+  outline: none;
+  box-shadow: none;
+}
+

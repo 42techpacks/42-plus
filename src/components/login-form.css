@@ -1,10 +1,23 @@
 .login-form {
     width: 100%;
     height: fit-content;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
 }
 
 .login-form .window-card-body {
     height: fit-content;
+}
+
+.login-form .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .phone-input {
@@ -18,4 +31,22 @@
 
 .login-form .inputs {
     display: flex;
+}
+
+.login-form p {
+    font-size: 14px;
+    width: 100%;
+}
+
+.login-form h4 {
+    margin: 20px;
+}
+
+/* Text */
+
+#terms {
+    text-decoration: none;
+    color: rgb(160, 160, 160);
+    font-size: 12px;
+    margin: 5px;
 }

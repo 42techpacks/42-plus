@@ -11,9 +11,15 @@ export default function Card({ title, img, children }) {
       <div className="window-card-header">
         <h3>{title}</h3>
         <div className="window-card-controls">
-          <div className="circle" style={{ backgroundColor: "red" }}></div>
-          <div className="circle" style={{ backgroundColor: "gold" }}></div>
-          <div className="circle" style={{ backgroundColor: "green" }}></div>
+          <div className="circle card-exit"></div>
+          <div className="circle card-minimize"></div>
+          {/* Testing window card interactivity */}
+          <div
+            className="circle card-maximize"
+            onClick={(e) => {
+              e.target.closest(".window-card").style.height = "1000px";
+            }}
+          ></div>
         </div>
       </div>
       <div className="window-card-body">
