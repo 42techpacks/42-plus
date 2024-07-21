@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Card from "./card";
 
 import Button from "./button";
 import Input from "./input";
@@ -89,9 +88,5 @@ export default function LoginForm() {
     </>
   );
 
-  return (
-    <form className="login-form">
-      <Card title={"Login"}>{flowStep1}</Card>
-    </form>
-  );
+  return <form className="login-form">{flowStep1}</form>;
 }
