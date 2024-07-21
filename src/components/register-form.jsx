@@ -1,5 +1,5 @@
 import { redirect } from "react-router-dom";
-import { supaClient } from "./supa-client";
+import { supaClient } from "../supa-client";
 
 // Loader to prevent user from accessing the register page directly
 // when they have no business doing that
