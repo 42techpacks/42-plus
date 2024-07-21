@@ -1,8 +1,17 @@
-import React from "react";
+import PropTypes from "prop-types";
 import InlineInput from "./inline-input";
 import "./input.css";
 
-const Input = ({
+Input.propTypes = {
+  onChange: PropTypes.func.isRequired,
+  updateState: PropTypes.func.isRequired,
+  title: PropTypes.string,
+  numbers: PropTypes.number,
+  country: PropTypes.bool,
+  type: PropTypes.string.isRequired,
+};
+
+export default function Input({
   onChange,
   updateState,
   title,
@@ -10,7 +19,7 @@ const Input = ({
   country,
   type,
   ...props
-}) => {
+}) {
   if (type === "phone") {
     return (
       <div id="phone-container">
@@ -134,6 +143,4 @@ const Input = ({
       </div>
     </div>
   );
-};
-
-export default Input;
+}
