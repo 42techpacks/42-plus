@@ -36,6 +36,7 @@ Card.propTypes = {
   children: PropTypes.node,
   activeForm: PropTypes.string,
   onTabClick: PropTypes.func,
+  onArrowClick: PropTypes.func,
   url: PropTypes.string,
 };
 
@@ -45,6 +46,7 @@ export default function Card({
   children,
   activeForm,
   onTabClick,
+  onArrowClick,
   url,
 }) {
   return (
@@ -67,7 +69,12 @@ export default function Card({
             ></div>
           </div>
         </div>
-        {url && <CardAddressBar url={"42+/" + url}></CardAddressBar>}
+        {url && (
+          <CardAddressBar
+            onArrowClick={onArrowClick}
+            url={"42+/" + url}
+          ></CardAddressBar>
+        )}
       </div>
 
       <div className="window-card-body">

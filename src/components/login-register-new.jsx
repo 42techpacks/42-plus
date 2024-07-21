@@ -7,30 +7,26 @@ import Card from "./card";
 import LoginForm from "./login-form";
 import RegisterForm from "./register-form";
 
-const loginForm = (
-  <div>
-    <h4>loginForm</h4>
-    <p>[Insert Des]</p>
-  </div>
-);
-
-const registerForm = (
-  <div>
-    <h4>registerForm</h4>
-    <p>[Insert Des]</p>
-  </div>
-);
-
 export default function LoginReigsterNew() {
   const [activeForm, setActiveForm] = useState("login");
+  const [pageIndex, setPageIndex] = useState(0);
 
   const handleTabClick = (form) => {
     setActiveForm(form);
   };
 
+  const handleArrowClick = (step) => {
+    setPageIndex(pageIndex + step);
+  };
+
   return (
     <div className="login-register-new">
-      <Card url={activeForm} onTabClick={handleTabClick} title="">
+      <Card
+        url={activeForm}
+        onTabClick={handleTabClick}
+        onArrowClick={handleArrowClick}
+        title=""
+      >
         {activeForm === "login" ? <LoginForm /> : <RegisterForm />}
       </Card>
     </div>

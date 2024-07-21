@@ -111,7 +111,7 @@
 /* Card Image */
 
 .window-card-body img {
-    width: 70%;
+    width: auto;
 }
 
 /* Card Tab Header */
