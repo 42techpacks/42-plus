@@ -30,7 +30,7 @@ export default function LoginReigsterNew() {
 
   return (
     <div className="login-register-new">
-      <Card url={activeForm} onTabClick={handleTabClick}>
+      <Card url={activeForm} onTabClick={handleTabClick} title="">
         {activeForm === "login" ? <LoginForm /> : <RegisterForm />}
       </Card>
     </div>

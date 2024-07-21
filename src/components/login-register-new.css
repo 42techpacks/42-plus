@@ -1,3 +1,10 @@
 .login-register-new {
     width: 100%;
 }
+
+.login-register-new h6 {
+    font-weight: 400;
+    text-align: center;
+    font-size: 14px;
+    margin: 0;
+}
