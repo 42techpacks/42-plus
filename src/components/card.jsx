@@ -1,11 +1,13 @@
-import React from "react";
+import PropTypes from "prop-types";
 import "./card.css";
 
-Card.defaultProps = {
-  title: "[Insert Title]",
+Card.propTypes = {
+  title: PropTypes.string,
+  img: PropTypes.string,
+  children: PropTypes.node,
 };
 
-export default function Card({ title, img, children }) {
+export default function Card({ title = "[Insert Title]", img, children }) {
   return (
     <div className="window-card">
       <div className="window-card-header">

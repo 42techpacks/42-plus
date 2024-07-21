@@ -1,6 +1,6 @@
 import React from "react";
-import "./input.css";
 import InlineInput from "./inline-input";
+import "./input.css";
 
 const Input = ({
   onChange,
@@ -29,7 +29,7 @@ const Input = ({
         {/* Number inputs and Title */}
         <div className="outer">
           {/* Title */}
-          {title && <h7>{title}</h7>}
+          {title && <h6>{title}</h6>}
 
           {/* Number Inputs */}
           <div className="outer-phone">
@@ -75,7 +75,7 @@ const Input = ({
         {/* Number inputs and Title */}
         <div className="outer outer-otp">
           {/* Title */}
-          {title && <h7>Enter Code</h7>}
+          {title && <h6>Enter Code</h6>}
 
           {/* Number Inputs */}
           <div

@@ -4,14 +4,10 @@ import "./App.css";
 import { useSession } from "./hooks/use-session";
 
 /* Component Imports */
-import Button from "./components/button";
-import FAQs from "./components/faqs";
-import FeaturedProduct from "./components/featured-product";
 import Footer from "./components/footer";
+import Home from "./components/home";
 import LoginForm from "./components/login-form";
-import LoginRegister from "./components/login-register";
 import { registerFormLoader } from "./components/register-form";
-import ScrollingBar from "./components/scrolling-bar";
 import TopBar from "./components/topbar";
 
 const router = createBrowserRouter([
@@ -21,7 +17,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <LoginRegister toggle={"login"} />,
+        element: <Home />,
+        // element: <LoginRegister toggle={"login"} />,
       },
       {
         path: "/login",
@@ -32,21 +29,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-function Home() {
-  return (
-    <>
-      <FeaturedProduct></FeaturedProduct>
-      <ScrollingBar message={"WELCOME TO 42+"}></ScrollingBar>
-      <Button
-        span={"NEW TO 42+?"}
-        label={"LEARN MORE"}
-        style={"window-black"}
-      ></Button>
-      <FAQs></FAQs>
-    </>
-  );
-}
 
 function App() {
   return <RouterProvider router={router} />;
