@@ -47,3 +47,9 @@
 .window-black span {
     color: #9c9c9c
 }
+
+.window-disabled {
+    color: #9c9c9c;
+    background-color: white;
+    border: 1px solid #9c9c9c;
+}

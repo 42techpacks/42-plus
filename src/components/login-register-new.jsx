@@ -15,10 +15,16 @@ export default function LoginReigsterNew() {
   const handleTabClick = (form) => {
     setActiveForm(form);
     setPageIndex(0);
+    setCompletedSteps(0);
   };
 
   const handleArrowClick = (step) => {
+    console.log(pageIndex);
+    console.log(completedSteps);
+
+    if (pageIndex + step > completedSteps - 1 || pageIndex + step < 0) return;
     setPageIndex(pageIndex + step);
+    setCompletedSteps(pageIndex + step);
   };
 
   const handleStepComplete = (step) => {

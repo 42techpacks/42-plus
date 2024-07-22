@@ -77,7 +77,7 @@ export default function LoginForm({ index, onStep }) {
           country={true}
         ></Input>
       </div>
-      <Button label={"VERIFY"} style={"window-black"}></Button>
+      <Button label={"VERIFY"} style={"window-black window-disabled"}></Button>
     </>
   );
 
