@@ -9,49 +9,53 @@ export const setReturnPath = () => {
   localStorage.setItem("returnPath", window.location.pathname);
 };
 
+/**
+ * Custom hook that manages user session and profile state.
+ * It fetches the current session, listens for authentication state changes,
+ * and subscribes to real-time updates on the user's profile.
+ *
+ * @export
+ * @return {*}
+ */
 export function useSession() {
   const navigate = useNavigate();
 
-  // State that exposes the session details to the rest of the app
+  // State for session rest of app uses
   const [userInfo, setUserInfo] = useState({
     profile: null,
     session: null,
   });
-  // State that we use to internally track the state of a users profile
-  //  so we can update above
+  // State for internal tracking of profile
   const [channel, setChannel] = useState(null);
 
   // Effect that updates the externally exposed session
   useEffect(() => {
     supaClient.auth.getSession().then(({ data: { session } }) => {
+      // Use lambda function so eslint doesn't complain about missing dependencies
       setUserInfo((prevInfo) => ({ ...prevInfo, session }));
       supaClient.auth.onAuthStateChange((_event, session) => {
         setUserInfo(() => ({ session, profile: null }));
       });
     });
-  }, []); // Add empty dependency array to run only once
+  }, []); // Empty dependency array to run only once
 
-  // Effect that we use to update above state internally so we can know in realtime
-  //  if a user deletes their profile for example
+  // Effect to update state in real-time for profile changes
   useEffect(() => {
-    // This function listens to changes in the user_profiles table for a specific user
-    //  and updates the above state
     const listenToUserProfileChanges = async (userId) => {
       const { data } = await supaClient
         .from("user_profiles")
         .select("*")
         .filter("user_id", "eq", userId);
+
+      //set state if profile found, otherwise navigate to welcome page
       if (data?.[0]) {
-        // profile found, update the state rest of app uses with it
         setUserInfo((prevInfo) => ({ ...prevInfo, profile: data?.[0] }));
       } else {
-        // profile not found, navigate the user to the welcome page
         navigate("/welcome");
       }
 
-      // set up a real-time subscription to listen for  changes in the user_profiles table
-      // we return this so we can unsubscribe when we're done
-      return supaClient
+      // Set up real-time subscription to user_profiles table
+      return supaClient // returned so we can unsubscribe
         .channel(`public:user_profiles`)
         .on(
           "postgres_changes",
@@ -68,6 +72,8 @@ export function useSession() {
         .subscribe();
     };
 
+    // Listen for profile changes if logged in and unregistered
+    // unsubscribe from profile changes if logged out
     if (userInfo.session?.user && !userInfo.profile) {
       listenToUserProfileChanges(userInfo.session.user.id).then(
         (newChannel) => {
