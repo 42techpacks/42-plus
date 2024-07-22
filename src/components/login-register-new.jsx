@@ -10,24 +10,40 @@ import RegisterForm from "./register-form";
 export default function LoginReigsterNew() {
   const [activeForm, setActiveForm] = useState("login");
   const [pageIndex, setPageIndex] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState(0);
 
   const handleTabClick = (form) => {
     setActiveForm(form);
+    setPageIndex(0);
   };
 
   const handleArrowClick = (step) => {
     setPageIndex(pageIndex + step);
   };
 
+  const handleStepComplete = (step) => {
+    if (step === 0) {
+      console.log("ERROR: Step not complete");
+    }
+
+    setCompletedSteps(completedSteps + 1);
+    setPageIndex(pageIndex + 1);
+  };
+
   return (
     <div className="login-register-new">
       <Card
-        url={activeForm}
+        url={activeForm + "/" + (pageIndex + 1)}
         onTabClick={handleTabClick}
         onArrowClick={handleArrowClick}
         title=""
+        pageIndex={pageIndex}
       >
-        {activeForm === "login" ? <LoginForm /> : <RegisterForm />}
+        {activeForm === "login" ? (
+          <LoginForm index={pageIndex} onStep={handleStepComplete} />
+        ) : (
+          <RegisterForm index={pageIndex} />
+        )}
       </Card>
     </div>
   );

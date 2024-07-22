@@ -1,7 +1,7 @@
 import React from "react";
 import "./card-address-bar.css";
 
-export default function CardAddressBar({ onArrowClick, url }) {
+export default function CardAddressBar({ onArrowClick, url, pageIndex }) {
   return (
     <div className="card-address-bar">
       <div id="address-bar-controls">
@@ -12,6 +12,7 @@ export default function CardAddressBar({ onArrowClick, url }) {
           width="24px"
           fill="#5f6368"
           onClick={() => onArrowClick(-1)}
+          className={pageIndex == 0 ? "disabled" : ""}
         >
           <path d="m313-440 224 224-57 56-320-320 320-320 57 56-224 224h487v80H313Z" />
         </svg>
@@ -22,6 +23,7 @@ export default function CardAddressBar({ onArrowClick, url }) {
           width="24px"
           fill="#5f6368"
           onClick={() => onArrowClick(1)}
+          className="disabled"
         >
           <path d="M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z" />
         </svg>

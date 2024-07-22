@@ -38,6 +38,7 @@ Card.propTypes = {
   onTabClick: PropTypes.func,
   onArrowClick: PropTypes.func,
   url: PropTypes.string,
+  pageIndex: PropTypes.number,
 };
 
 export default function Card({
@@ -47,6 +48,7 @@ export default function Card({
   activeForm,
   onTabClick,
   onArrowClick,
+  pageIndex,
   url,
 }) {
   return (
@@ -73,6 +75,7 @@ export default function Card({
           <CardAddressBar
             onArrowClick={onArrowClick}
             url={"42+/" + url}
+            pageIndex={pageIndex}
           ></CardAddressBar>
         )}
       </div>

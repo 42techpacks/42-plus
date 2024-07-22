@@ -4,21 +4,14 @@ import Button from "./button";
 import Input from "./input";
 import "./login-form.css";
 
-export default function LoginForm() {
+export default function LoginForm({ index, onStep }) {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
-  const [registerFlowStep, setRegisterFlowStep] = useState("phone");
   const [userCountry, setUserCountry] = useState("1");
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
 
   const toggleFormCompletion = (completed) => {
     setIsFormCompleted(completed);
-  };
-
-  const switchFlowStep = (completed) => {
-    console.log("next step: " + completed);
-    setIsFormCompleted(false);
-    setRegisterFlowStep(completed);
   };
 
   const updateUserCountry = (value) => {
@@ -57,7 +50,7 @@ export default function LoginForm() {
           country={true}
         ></Input>
       </div>
-      <Button label={"SUBMIT"} style={"window-black"}></Button>
+      <Button onClick={onStep} label={"SUBMIT"} style={"window-black"}></Button>
     </>
   );
 
@@ -88,5 +81,7 @@ export default function LoginForm() {
     </>
   );
 
-  return <form className="login-form">{flowStep1}</form>;
+  const flowSteps = [flowStep1, flowStep2];
+
+  return <form className="login-form">{flowSteps[index]}</form>;
 }

@@ -11,9 +11,16 @@ export default function Button({
   label = "Click Me",
   style = "window",
   span = "",
+  onClick = null,
 }) {
   return (
-    <button className={`button ${style}`}>
+    <button
+      onClick={(e) => {
+        e.preventDefault();
+        if (onClick) onClick(e);
+      }}
+      className={`button ${style}`}
+    >
       <span className="button-subtitle">{span}</span>
       {label}
     </button>
