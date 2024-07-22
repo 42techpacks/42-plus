@@ -1,20 +1,20 @@
-import React from "react";
-
 import "./card-preorder.css";
 
-import Card from "./card";
 import Button from "./button";
+import Card from "./card";
 
-CardPreOrder.defaultProps = {
-  productName: "[Insert Product Name]",
-  retailPrice: "[$RP]",
-  preorderPrice: "[$POP]",
+import PropTypes from "prop-types";
+
+CardPreOrder.propTypes = {
+  productName: PropTypes.string.isRequired,
+  retailPrice: PropTypes.string.isRequired,
+  preorderPrice: PropTypes.string.isRequired,
 };
 
 export default function CardPreOrder({
-  productName,
-  retailPrice,
-  preorderPrice,
+  productName = "[Insert Product Name]",
+  retailPrice = "[$RP]",
+  preorderPrice = "[$POP]",
 }) {
   return (
     <Card title={"Pre-Order"}>

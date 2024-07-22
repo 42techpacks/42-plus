@@ -1,11 +1,12 @@
-import React from "react";
 import "./scrolling-bar.css";
 
-ScrollingBar.defaultProps = {
-  message: "[Insert Message]",
+import PropTypes from "prop-types";
+
+ScrollingBar.propTypes = {
+  message: PropTypes.string.isRequired,
 };
 
-export default function ScrollingBar({ message }) {
+export default function ScrollingBar({ message = "[Insert Message]" }) {
   return (
     <div className="scrolling-bar">
       <div className="scrolling-text">

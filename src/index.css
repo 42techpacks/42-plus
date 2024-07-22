@@ -41,7 +41,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
 
-  background-image: url('/public/background-pattern.svg');
+  background-image: url('/background-pattern.svg');
   background-size: cover;
   background-repeat: no-repeat;
 }
