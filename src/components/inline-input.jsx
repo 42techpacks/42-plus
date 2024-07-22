@@ -8,7 +8,9 @@ export default function InlineInput({ type, form, index, updateState }) {
       <input
         className={`${type}-input`}
         id={`${form}-${type}-number-${index}`}
-        maxLength={1}
+        onInput={(e) => {
+          e.target.value = e.target.value.slice(0, 1);
+        }}
         type="number"
         pattern="\d{0,3}"
         /* Verify if the input is a single digit and enable the register button */

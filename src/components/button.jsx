@@ -12,14 +12,17 @@ export default function Button({
   style = "window",
   span = "",
   onClick = null,
+  disabled = false,
 }) {
+  if (disabled) onClick = null;
+
   return (
     <button
       onClick={(e) => {
         e.preventDefault();
         if (onClick) onClick(e);
       }}
-      className={`button ${style}`}
+      className={`button ${style} ${disabled ? "window-disabled" : ""}`}
     >
       <span className="button-subtitle">{span}</span>
       {label}

@@ -5,6 +5,7 @@ import { useSession } from "./hooks/use-session";
 
 /* Component Imports */
 import Footer from "./components/footer";
+import Home from "./components/home";
 import LoginForm from "./components/login-form";
 import LoginReigsterNew from "./components/login-register-new";
 import { registerFormLoader } from "./components/register-form";
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         //TODO: change this, shouldn't be login form
         element: <LoginForm />,
         loader: registerFormLoader,
+      },
+      {
+        path: "/home",
+        element: <Home />,
       },
     ],
   },

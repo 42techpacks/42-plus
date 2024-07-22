@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: column;
 
+    height: fit-content;
+
     gap: 10px;
 }
 
@@ -37,4 +39,8 @@
 .featured-product p {
     margin: 0;
     font-size: 12px;
+}
+
+.featured-product .window-card-img {
+    width: 70%;
 }

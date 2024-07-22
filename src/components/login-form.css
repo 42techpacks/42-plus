@@ -7,6 +7,7 @@
 
     justify-content: center;
     align-items: center;
+
 }
 
 .login-form .window-card-body {
@@ -18,6 +19,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
+    gap: 20px;
+    margin: 10px 0px 20px 0px;
+}
+
+.login-form .header h4, p{
+    margin: 0;
 }
 
 .phone-input {
@@ -26,11 +34,30 @@
     align-items: center;
 
     width: 100%;
+    background-color: white;
+    color: black;
     
 }
 
 .login-form .inputs {
     display: flex;
+}
+
+.login-form .input-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0px;
+
+    gap: 10px;
+}
+
+.login-form .input-container p {
+    font-size: 12px;
+    width: 80%;
+    color:rgb(112, 112, 112);
+
+    margin-bottom: 30px;
 }
 
 .login-form p {

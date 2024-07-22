@@ -6,7 +6,6 @@
   font-family: 'Overused Grotesk';
 
   width: 100%;
-  height: 100vh;
 
   box-sizing: border-box;
 
@@ -18,7 +17,7 @@
 
 .main {
   width: 100%;
-  height: 100%;
+  height: fit-content;
 
   max-width: 500px;
 
@@ -29,6 +28,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 }
 
 .logo {

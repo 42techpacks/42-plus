@@ -57,7 +57,7 @@ export default function Card({
 
       <div className="card-header">
         <div className="window-card-header">
-          {tabHeader(onTabClick)}
+          {onTabClick && tabHeader(onTabClick)}
           {title && <h3>{title}</h3>}
           <div className="window-card-controls">
             <div className="circle card-exit"></div>

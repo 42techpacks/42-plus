@@ -125,21 +125,22 @@ export default function Input({
 
   return (
     <div className="outer">
-      {title && <h4>{title}</h4>}
+      {title && <h6>{title}</h6>}
       <div className="inner">
-        {type === "email" && (
-          <img
-            src={`${process.env.PUBLIC_URL}/mail_icon.svg`}
-            alt="email icon"
-          />
+        {type === "username" && (
+          <img src={`/profile-icon.svg`} alt="profile icon" />
         )}
         {type === "password" && (
-          <img
-            src={`${process.env.PUBLIC_URL}/lock_icon.svg`}
-            alt="password icon"
-          />
+          <img src={`/lock_icon.svg`} alt="password icon" />
         )}
-        <input {...props} type={type}></input>
+        <input
+          {...props}
+          type={type}
+          onChange={(e) => {
+            const value = e.target.value;
+            onChange(value);
+          }}
+        ></input>
       </div>
     </div>
   );

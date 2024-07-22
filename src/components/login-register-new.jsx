@@ -48,7 +48,7 @@ export default function LoginReigsterNew() {
         {activeForm === "login" ? (
           <LoginForm index={pageIndex} onStep={handleStepComplete} />
         ) : (
-          <RegisterForm index={pageIndex} />
+          <RegisterForm index={pageIndex} onStep={handleStepComplete} />
         )}
       </Card>
     </div>
