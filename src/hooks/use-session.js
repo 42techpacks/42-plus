@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 
@@ -50,9 +50,6 @@ export function useSession() {
       //set state if profile found, otherwise navigate to welcome page
       if (data?.[0]) {
         setUserInfo((prevInfo) => ({ ...prevInfo, profile: data?.[0] }));
-        // navigate("")
-      } else {
-        // navigate("/welcome");
       }
 
       // Set up real-time subscription to user_profiles table
@@ -82,7 +79,7 @@ export function useSession() {
             channel.unsubscribe();
           }
           setChannel(newChannel);
-        },
+        }
       );
     } else if (!userInfo.session?.user) {
       channel?.unsubscribe();
@@ -90,5 +87,17 @@ export function useSession() {
     }
   }, [userInfo.session, userInfo.profile]);
 
-  return userInfo;
+  const refreshProfile = useCallback(async (userId) => {
+    const { data } = await supaClient
+      .from("user_profiles")
+      .select("*")
+      .filter("user_id", "eq", userId)
+      .single();
+
+    if (data) {
+      setUserInfo((prevInfo) => ({ ...prevInfo, profile: data }));
+    }
+  }, []);
+
+  return { ...userInfo, refreshProfile };
 }

@@ -18,12 +18,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <LoginReigsterNew />,
-      },
-      {
-        path: "/home",
         element: <Home />,
-      },
+      }
     ],
   },
 ]);

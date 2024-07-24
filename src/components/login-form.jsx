@@ -89,7 +89,6 @@ export default function LoginForm({ index, onStep }) {
           }
           console.log(`User OTP checked received.. Try again`);
           console.log(data);
-          navigate("/home");
         });
     },
   };

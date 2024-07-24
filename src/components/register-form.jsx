@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { redirect, useNavigate } from "react-router-dom";
+import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
 
 import Button from "./button";
@@ -33,6 +34,8 @@ export async function registerFormLoader() {
 export default function RegisterForm({ index, onStep }) {
   const navigate = useNavigate();
 
+  const user = useContext(UserContext);
+  const { refreshProfile } = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
@@ -66,6 +69,22 @@ export default function RegisterForm({ index, onStep }) {
     footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
     buttonLabel: "SEND CODE",
     error: "ERROR: Invalid Phone Number",
+    buttonHandler: () => {
+      setFormError("");
+      console.log(userPhoneNumber);
+      console.log("checking user phone number...");
+      supaClient.auth
+        .signInWithOtp({
+          phone: `1${userPhoneNumber}`,
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            setFormError(error.message);
+          }
+          console.log(data);
+        });
+      onStep();
+    },
   };
 
   const otpVerify = {
@@ -81,6 +100,26 @@ export default function RegisterForm({ index, onStep }) {
     footer: ``,
     buttonLabel: "VERIFY",
     error: "ERROR: Invalid Verification Code",
+    buttonHandler: () => {
+      setFormError("");
+      console.log("checking user provided OTP...");
+
+      supaClient.auth
+        .verifyOtp({
+          phone: `1${userPhoneNumber}`,
+          token: userOTP,
+          type: "sms",
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            setFormError(error.message);
+            throw error;
+          }
+          console.log(`User OTP checked received.. Try again`);
+          console.log(data);
+          onStep();
+        });
+    },
   };
 
   const personalInfo = {
@@ -96,10 +135,27 @@ export default function RegisterForm({ index, onStep }) {
     country: true,
     footer: ``,
     buttonLabel: "ENTER 42+",
-    error: "ERROR: Invalid Verification Code",
+    error: "ERROR: Username is already taken",
     buttonHandler: () => {
       console.log("redirecting...");
-      navigate("/home");
+      setFormError("");
+      supaClient
+        .from("user_profiles")
+        .insert([
+          {
+            user_id: user.session?.user.id || "",
+            username: userUsername,
+          },
+        ])
+        .then(async ({ error }) => {
+          if (error) {
+            setFormError(`Username "${userUsername}" is already taken`);
+            return;
+          } else {
+            await refreshProfile(user.session?.user.id);
+            navigate("");
+          }
+        });
     },
   };
 

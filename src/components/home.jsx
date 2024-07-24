@@ -9,7 +9,7 @@ export default function Home() {
   const userProfile = useContext(UserContext);
   return (
     <>
-      {true ? (
+      {userProfile.profile ? (
         <div className="home">
           <FootytwoMiniSite />
         </div>
