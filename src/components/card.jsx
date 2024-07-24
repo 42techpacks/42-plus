@@ -2,8 +2,9 @@ import PropTypes from "prop-types";
 import CardAddressBar from "./card-address-bar";
 import "./card.css";
 
-const tabHeader = (onTabClick) => {
+const tabHeader = (tabs, onTabClick) => {
   const handleTabClick = (tab) => {
+    /* TO-DO: Limit search to target component (don't want to affect other cards) */
     const tabs = document.querySelectorAll(".card-tab");
     tabs.forEach((t) => t.classList.remove("selected"));
     document.querySelector(`.card-tab-${tab}`).classList.add("selected");
@@ -12,20 +13,17 @@ const tabHeader = (onTabClick) => {
 
   return (
     <div className="card-tab-header">
-      <a
-        className={`card-tab card-tab-login`}
-        onClick={() => handleTabClick("login")}
-        style={{ cursor: "pointer" }}
-      >
-        <h3>Login</h3>
-      </a>
-      <a
-        className={`card-tab card-tab-register`}
-        onClick={() => handleTabClick("register")}
-        style={{ cursor: "pointer" }}
-      >
-        <h3>Register</h3>
-      </a>
+      {tabs &&
+        tabs.map((tab) => (
+          <a
+            key={tab}
+            className={`card-tab card-tab-${tab}`}
+            onClick={() => handleTabClick(tab)}
+            style={{ cursor: "pointer" }}
+          >
+            <h3>{tab.charAt(0).toUpperCase() + tab.slice(1)}</h3>
+          </a>
+        ))}
     </div>
   );
 };
@@ -35,6 +33,7 @@ Card.propTypes = {
   img: PropTypes.string,
   children: PropTypes.node,
   activeForm: PropTypes.string,
+  tabs: PropTypes.array,
   onTabClick: PropTypes.func,
   onArrowClick: PropTypes.func,
   url: PropTypes.string,
@@ -46,6 +45,7 @@ export default function Card({
   img,
   children,
   activeForm,
+  tabs,
   onTabClick,
   onArrowClick,
   pageIndex,
@@ -57,7 +57,7 @@ export default function Card({
 
       <div className="card-header">
         <div className="window-card-header">
-          {onTabClick && tabHeader(onTabClick)}
+          {onTabClick && tabHeader(tabs, onTabClick)}
           {title && <h3>{title}</h3>}
           <div className="window-card-controls">
             <div className="circle card-exit"></div>

@@ -17,9 +17,15 @@
 .footytwo-ms {
     .header {
         width: 100%;
-        background-color: red;
+        box-sizing: border-box;
+        padding: 10px;
+        border: 1px solid white;
+        border-radius: 5px;
+        
 
         display: flex;
+        justify-content: center;
+        align-items: center;
         
     }
 

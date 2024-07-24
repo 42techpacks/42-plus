@@ -1,6 +1,6 @@
-/* Window Button Style */
+/* Default Button Style */
 
-.window {
+button {
 
     background-color: #0E9A24;
     border-radius: 5px;
@@ -20,6 +20,8 @@
     border: none;
 
 }
+
+/* Window Button Style */
 
 .window-black {
 
@@ -75,4 +77,14 @@
     color: #9c9c9c;
     background-color: white;
     border: 1px solid #9c9c9c;
+}
+
+/* Shopify Buy Button */
+
+.shopify-buy {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+    border: none;
+
+    cursor: pointer;
 }

@@ -40,6 +40,7 @@ export default function LoginReigsterNew() {
     <div className="login-register-new">
       <Card
         url={activeForm + "/" + (pageIndex + 1)}
+        tabs={["login", "register"]}
         onTabClick={handleTabClick}
         onArrowClick={handleArrowClick}
         title=""
