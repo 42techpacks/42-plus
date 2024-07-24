@@ -1,10 +1,16 @@
+import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { supaClient } from "../supa-client";
 import Button from "./button";
 import Input from "./input";
 import "./login-form.css";
 
+LoginForm.propTypes = {
+  index: PropTypes.number.isRequired,
+  onStep: PropTypes.func.isRequired,
+};
 export default function LoginForm({ index, onStep }) {
   const navigate = useNavigate();
   const [isFormCompleted, setIsFormCompleted] = useState(false);
@@ -34,6 +40,22 @@ export default function LoginForm({ index, onStep }) {
     footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
     buttonLabel: "SEND CODE",
     error: "ERROR: Invalid Phone Number",
+    buttonHandler: () => {
+      setFormError("");
+      console.log(userPhoneNumber);
+      console.log("checking user phone number...");
+      supaClient.auth
+        .signInWithOtp({
+          phone: `1${userPhoneNumber}`,
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            setFormError(error.message);
+          }
+          console.log(data);
+        });
+      onStep();
+    },
   };
 
   const otpVerify = {
@@ -51,8 +73,24 @@ export default function LoginForm({ index, onStep }) {
     buttonLabel: "LOGIN",
     error: "ERROR: Invalid Verification Code",
     buttonHandler: () => {
-      console.log("redirecting...");
-      navigate("/home");
+      setFormError("");
+      console.log("checking user provided OTP...");
+
+      supaClient.auth
+        .verifyOtp({
+          phone: `1${userPhoneNumber}`,
+          token: userOTP,
+          type: "sms",
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            setFormError(error.message);
+            throw error;
+          }
+          console.log(`User OTP checked received.. Try again`);
+          console.log(data);
+          navigate("/home");
+        });
     },
   };
 

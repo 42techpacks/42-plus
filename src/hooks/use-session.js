@@ -50,8 +50,9 @@ export function useSession() {
       //set state if profile found, otherwise navigate to welcome page
       if (data?.[0]) {
         setUserInfo((prevInfo) => ({ ...prevInfo, profile: data?.[0] }));
+        // navigate("")
       } else {
-        navigate("/welcome");
+        // navigate("/welcome");
       }
 
       // Set up real-time subscription to user_profiles table
@@ -81,13 +82,13 @@ export function useSession() {
             channel.unsubscribe();
           }
           setChannel(newChannel);
-        }
+        },
       );
     } else if (!userInfo.session?.user) {
       channel?.unsubscribe();
       setChannel(null);
     }
-  }, [userInfo.session, userInfo.profile, channel]);
+  }, [userInfo.session, userInfo.profile]);
 
   return userInfo;
 }

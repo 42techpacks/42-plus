@@ -21,12 +21,6 @@ const router = createBrowserRouter([
         element: <LoginReigsterNew />,
       },
       {
-        path: "/login",
-        //TODO: change this, shouldn't be login form
-        element: <LoginForm />,
-        loader: registerFormLoader,
-      },
-      {
         path: "/home",
         element: <Home />,
       },
