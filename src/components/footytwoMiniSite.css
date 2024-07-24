@@ -1,0 +1,34 @@
+.footytwo-ms {
+    width: 100%;
+}
+
+.footytwo-ms .window-card-body {
+    height: 500px;
+    background-color: #215732;
+
+    justify-content: space-between;
+    
+}
+
+#footytwo-type-logo-white {
+    width: 30%;
+}
+
+.footytwo-ms {
+    .header {
+        width: 100%;
+        background-color: red;
+
+        display: flex;
+        
+    }
+
+    .hero {
+        width: 100%;
+
+        img {
+            width: 70%;
+        }
+        
+    }
+}

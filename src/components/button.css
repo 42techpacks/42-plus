@@ -44,6 +44,29 @@
 
 }
 
+.window-white {
+
+    background-color: white;
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: black;
+    box-sizing: border-box;
+    padding: 10px;
+
+    width: 100%;
+    font-family: 'Geist Mono';
+    font-weight: 800;
+
+    border: 1px solid black;
+
+    gap: 10px
+
+}
+
 .window-black span {
     color: #9c9c9c
 }
