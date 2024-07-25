@@ -81,9 +81,11 @@ export default function RegisterForm({ index, onStep }) {
           if (error) {
             setFormError(error.message);
           }
-          console.log(data);
+          else {
+            console.log(data);
+            onStep();
+          }
         });
-      onStep();
     },
   };
 
