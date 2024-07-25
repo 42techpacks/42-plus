@@ -39,22 +39,30 @@ export default function LoginForm({ index, onStep }) {
     country: true,
     footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
     buttonLabel: "SEND CODE",
+    //TODO: this can be removed I believe
     error: "ERROR: Invalid Phone Number",
     buttonHandler: () => {
       setFormError("");
       console.log(userPhoneNumber);
       console.log("checking user phone number...");
+
       supaClient.auth
         .signInWithOtp({
           phone: `1${userPhoneNumber}`,
+          options: {
+            shouldCreateUser: false,
+          }
         })
         .then(({ data, error }) => {
           if (error) {
+            console.log(error)
             setFormError(error.message);
           }
-          console.log(data);
+          else {
+            onStep();
+            console.log(`got ${data}`);
+          }
         });
-      onStep();
     },
   };
 
@@ -89,7 +97,6 @@ export default function LoginForm({ index, onStep }) {
           }
           console.log(`User OTP check received.. Try again`);
           console.log(data);
-          navigate("")
         });
     },
   };
