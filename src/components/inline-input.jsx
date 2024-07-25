@@ -39,6 +39,16 @@ export default function InlineInput({ type, form, index, updateState }) {
             }
           }
         }}
+        onKeyDown={(e) => {
+          if (e.key === "Backspace" && e.target.value === "") {
+            const previousInputId = `${form}-${type}-number-${index - 1}`;
+            const previousSibling = document.getElementById(previousInputId);
+            if (previousSibling) {
+              previousSibling.focus();
+              previousSibling.value = "";
+            }
+          }
+        }}
       />
     </div>
   );

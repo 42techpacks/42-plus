@@ -6,7 +6,10 @@
     height: 500px;
     background-color: #215732;
 
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+
+    gap: 20px;
     
 }
 
@@ -15,6 +18,9 @@
 }
 
 .footytwo-ms {
+
+    box-sizing: border-box;
+
     .header {
         width: 100%;
         box-sizing: border-box;
@@ -30,11 +36,72 @@
     }
 
     .hero {
-        width: 100%;
+        color: white;
+        width: 90%;
+        height: 300px;
+        display: flex;
 
-        img {
-            width: 70%;
-        }
+        align-items: center;
+        justify-content: center;
         
+        .hero-left, .hero-right {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero-left {
+            
+            height: 100%;
+            align-items: center;
+            justify-content: center;
+
+
+            img {
+                width: 100%;
+                height: 90%;
+                object-fit: contain;
+            }
+        }
+
+        .hero-right {
+
+            gap: 10px;
+
+            .cta-header {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+
+                gap: 0px;
+
+
+            }
+
+            h4 {
+                text-align: left;
+                margin: 0;
+                font-weight: 600;
+                
+            }
+
+            .price {
+                font-weight: 400;
+            }
+        }
+
     }
+
+    .item-selection {
+        display: flex;
+        width: 90%;
+        height: fit-content;
+        align-items: center;
+        justify-content: center;
+
+        box-sizing: border-box;
+        padding-bottom: 25px;
+        gap: 10px;
+    }
+
 }

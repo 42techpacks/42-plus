@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Card from "./card";
 
 import "./footytwoMiniSite.css";
+import ItemSelectionOption from "./mini-site-components/shopify-buy-button/item-selection-option";
 import ShopifyBuyButton from "./mini-site-components/shopify-buy-button/shopify-buy-button";
 
 export default function FootytwoMiniSite() {
@@ -15,18 +16,47 @@ export default function FootytwoMiniSite() {
 
   const main = (
     <>
-      <div className="header">
-        <img
-          id="footytwo-type-logo-white"
-          src="/footytwo-type-logo-white.svg"
-        ></img>
-      </div>
-
       <div className="hero">
-        <img src="/colombiaFlatFront.png" alt="Colombia Flat Front"></img>
+        <div className="hero-left">
+          <img src={"/chileM-full.png"}></img>
+        </div>
+        <div className="hero-right">
+          <div className="cta-header">
+            <h4>Knit Argentina Jersey</h4>
+            <h4>
+              <span className="price">$86</span>
+            </h4>
+          </div>
+          <ShopifyBuyButton productID={"42"} />
+        </div>
       </div>
-
-      <ShopifyBuyButton productID={"42"} />
+      <div className="item-selection">
+        <ItemSelectionOption
+          img={"/chileM.png"}
+          flag={"argentina"}
+          label={"ARG"}
+        ></ItemSelectionOption>
+        <ItemSelectionOption
+          img={"/chileM.png"}
+          flag={"brazil"}
+          label={"BRA"}
+        ></ItemSelectionOption>
+        <ItemSelectionOption
+          img={"/chileM.png"}
+          flag={"colombia"}
+          label={"COL"}
+        ></ItemSelectionOption>
+        <ItemSelectionOption
+          img={"/chileM.png"}
+          flag={"mexico"}
+          label={"MEX"}
+        ></ItemSelectionOption>
+        <ItemSelectionOption
+          img={"/chileM.png"}
+          flag={"chile"}
+          label={"CHI"}
+        ></ItemSelectionOption>
+      </div>
     </>
   );
 

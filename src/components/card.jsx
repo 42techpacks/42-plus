@@ -14,10 +14,12 @@ const tabHeader = (tabs, onTabClick) => {
   return (
     <div className="card-tab-header">
       {tabs &&
-        tabs.map((tab) => (
+        tabs.map((tab, index) => (
           <a
             key={tab}
-            className={`card-tab card-tab-${tab}`}
+            className={`card-tab card-tab-${tab} ${
+              index === 0 ? "selected" : ""
+            }`}
             onClick={() => handleTabClick(tab)}
             style={{ cursor: "pointer" }}
           >
