@@ -14,6 +14,7 @@
 
 .disabled {
     fill: #c7c6c6;
+    cursor: not-allowed;
 }
 
 #address-bar-url {
@@ -42,6 +43,7 @@
 #address-bar-controls svg {
     width: 16px;
     height: auto;
+    cursor: pointer;
 }
 
 #address-bar-help {
@@ -58,4 +60,9 @@
     justify-content: center;
     align-items: center;
     width: 22px;
+}
+
+.disabled {
+    fill: #c7c6c6;
+    cursor: not-allowed;
 }

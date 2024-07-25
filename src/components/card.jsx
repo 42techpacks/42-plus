@@ -65,12 +65,7 @@ export default function Card({
             <div className="circle card-exit"></div>
             <div className="circle card-minimize"></div>
             {/* Testing window card interactivity */}
-            <div
-              className="circle card-maximize"
-              onClick={(e) => {
-                e.target.closest(".window-card").style.height = "1000px";
-              }}
-            ></div>
+            <div className="circle card-maximize"></div>
           </div>
         </div>
         {url && (

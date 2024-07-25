@@ -1,0 +1,7 @@
+.creation-list {
+    color: black;
+
+    .current-user {
+        font-weight: bold;
+    }
+}

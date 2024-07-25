@@ -2,16 +2,16 @@ import { useContext } from "react";
 import { UserContext } from "../App";
 import LoginRegisterNew from "./login-register-new";
 
-import FootytwoMiniSite from "./footytwoMiniSite";
+import BetaMiniSite from "./beta-mini-site";
 import "./home.css";
 
 export default function Home() {
   const userProfile = useContext(UserContext);
   return (
     <>
-      {userProfile.profile ? (
+      {true ? (
         <div className="home">
-          <FootytwoMiniSite />
+          <BetaMiniSite userCreationIndex={"42"} />
         </div>
       ) : (
         <LoginRegisterNew />

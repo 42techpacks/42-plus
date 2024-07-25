@@ -51,14 +51,13 @@ export default function LoginForm({ index, onStep }) {
           phone: `1${userPhoneNumber}`,
           options: {
             shouldCreateUser: false,
-          }
+          },
         })
         .then(({ data, error }) => {
           if (error) {
-            console.log(error)
+            console.log(error);
             setFormError(error.message);
-          }
-          else {
+          } else {
             onStep();
             console.log(`got ${data}`);
           }
