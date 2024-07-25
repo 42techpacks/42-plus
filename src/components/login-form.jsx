@@ -17,7 +17,7 @@ export default function LoginForm({ index, onStep }) {
   const [userCountry, setUserCountry] = useState("1");
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
-  const [formError, setFormError] = useState(false);
+  const [formError, setFormError] = useState("");
 
   const updateUserPhoneNumber = (value) => {
     setUserPhoneNumber(value);
@@ -87,8 +87,9 @@ export default function LoginForm({ index, onStep }) {
             setFormError(error.message);
             throw error;
           }
-          console.log(`User OTP checked received.. Try again`);
+          console.log(`User OTP check received.. Try again`);
           console.log(data);
+          navigate("")
         });
     },
   };
@@ -124,7 +125,7 @@ export default function LoginForm({ index, onStep }) {
       </div>
       {formError && (
         <p id="register-form-error" className="error-text">
-          {flowStep[index].error}
+          {formError}
         </p>
       )}
       <Button

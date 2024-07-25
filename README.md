@@ -42,6 +42,16 @@ bun run dev
 ```
 
 ### Supabase Workflow
+Set up some necessary env variables
+```bash
+# for supabase sms
+export SUPABASE_AUTH_SMS_TWILIO_ACCOUNT_SID <get value from kenny (or notion if he stops being lazy)>
+
+export SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN <value>
+
+export SUPABASE_AUTH_SMS_TWILIO_SERVICE_SID <value>
+```
+
 Commands
 ```bash
 # to start the local supabase instance
