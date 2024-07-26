@@ -1,6 +1,6 @@
 import React from "react";
+import Button from "./button";
 import "./topbar.css";
-import ProfileSnippet from "./profile-snippet";
 
 export default function TopBar({}) {
   return (
@@ -12,7 +12,11 @@ export default function TopBar({}) {
         width="42"
         height="42"
       />
-      <ProfileSnippet />
+      <Button
+        label="LOG OUT"
+        style="window-white"
+        onClick={() => console.log("Logging out...")}
+      ></Button>
     </div>
   );
 }
