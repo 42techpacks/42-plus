@@ -94,7 +94,7 @@ export default function BetaMiniSite({ userCreationIndex }) {
     buttonHandler: () => onStep(),
     content: (
       <CreationList
-        orderedCreationList={["kenny1g", "npcmilo", "faizan.a"]}
+        orderedCreationList={["kennyosele", "npcmilo", "faizan.a"]}
         userCreationIndex={2}
       />
     ),
