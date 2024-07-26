@@ -10,6 +10,13 @@
   font-weight: 300 900;
 }
 
+@font-face {
+  font-family: 'Geist Mono';
+  src: url("/fonts/variable/geist/GeistMonoVF.woff2") format("woff2 supports variations"),
+      url("/fonts/variable/geist/GeistMonoVF.woff2") format("woff2-variations");
+
+  font-weight: 300 900;
+}
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

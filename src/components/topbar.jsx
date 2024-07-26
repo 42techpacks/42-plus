@@ -1,8 +1,9 @@
-import React from "react";
+import { useContext } from "react";
+import { supaClient  } from "../supa-client";
 import Button from "./button";
 import "./topbar.css";
 
-export default function TopBar({}) {
+export default function TopBar() {
   return (
     <div className="topbar">
       <img
@@ -15,7 +16,7 @@ export default function TopBar({}) {
       <Button
         label="LOG OUT"
         style="window-white"
-        onClick={() => console.log("Logging out...")}
+        onClick={() => { supaClient.auth.signOut()}}
       ></Button>
     </div>
   );
