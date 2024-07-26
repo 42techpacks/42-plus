@@ -1,11 +1,8 @@
-import React, { useContext } from "react";
-import { UserContext } from "../App";
+import { supaClient } from "../supa-client";
 import Button from "./button";
 import "./topbar.css";
 
-export default function TopBar({}) {
-  const userContext = useContext(UserContext);
-
+export default function TopBar() {
   return (
     <div className="topbar">
       <img
@@ -15,13 +12,13 @@ export default function TopBar({}) {
         width="42"
         height="42"
       />
-      {userContext.profile && (
-        <Button
-          label="LOG OUT"
-          style="window-white"
-          onClick={() => console.log("Logging out...")}
-        ></Button>
-      )}{" "}
+      <Button
+        label="LOG OUT"
+        style="window-white"
+        onClick={() => {
+          supaClient.auth.signOut();
+        }}
+      ></Button>
     </div>
   );
 }
