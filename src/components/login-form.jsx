@@ -11,8 +11,9 @@ import { loginFormConfig } from "../utils/formConfigs";
 LoginForm.propTypes = {
   index: PropTypes.number.isRequired,
   onStep: PropTypes.func.isRequired,
+  setActiveForm: PropTypes.func.isRequired,
 };
-export default function LoginForm({ index, onStep }) {
+export default function LoginForm({ index, onStep, setActiveForm }) {
   const navigate = useNavigate();
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
@@ -21,12 +22,28 @@ export default function LoginForm({ index, onStep }) {
   const [formError, setFormError] = useState("");
   const [showRegistrationPrompt, setShowRegistrationPrompt] = useState(false);
 
-  const handleRegisterChoice = (choice) => {
-    if (choice === 'yes') {
-      navigate('/register'); // Redirect to registration page
+  const handleRegisterChoice = (e, choice) => {
+    e.preventDefault();
+    if (choice === "yes") {
+      supaClient.auth
+        .signInWithOtp({
+          phone: `1${userPhoneNumber}`,
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error(error)
+            setShowRegistrationPrompt(false);
+            setFormError("😖 Looks like things might be down on our end");
+          } else {
+            console.log(`signed user up got ${data}`);
+            setActiveForm("register", userPhoneNumber);
+            onStep();
+            setIsFormCompleted(false);
+          }
+        });
     } else {
       setShowRegistrationPrompt(false);
-      setFormError('Signups not allowed for otp');
+      setFormError("Signups not allowed for otp");
     }
   };
 
@@ -127,9 +144,11 @@ export default function LoginForm({ index, onStep }) {
       </div>
       {showRegistrationPrompt && (
         <div className="registration-prompt">
-          <p>Signups are not allowed for OTP. Would you like to register instead?</p>
-          <button onClick={() => handleRegisterChoice('yes')}>Yes</button>
-          <button onClick={() => handleRegisterChoice('no')}>No</button>
+          <p>
+            Signups are not allowed for OTP. Would you like to register instead?
+          </p>
+          <button onClick={(e) => handleRegisterChoice(e, "yes")} > Yes </button>
+          <button onClick={(e) => handleRegisterChoice(e, "no")}>No</button>
         </div>
       )}
       {formError && !showRegistrationPrompt && (
