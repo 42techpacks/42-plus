@@ -1,0 +1,7 @@
+Here are the SQL schema for the different tables in the database:
+
+# "auth.users": supabase auth tables
+Display Name | Email | Phone | Provider | Created | Last Sign In | User UID
+
+# "public.user_profiles": Stores user info
+user_id | username | phone_number | created_at

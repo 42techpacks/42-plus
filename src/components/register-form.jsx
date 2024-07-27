@@ -34,10 +34,11 @@ export async function registerFormLoader() {
 export default function RegisterForm({ index, onStep }) {
   const navigate = useNavigate();
 
-  const user = useContext(UserContext);
+  const userContext = useContext(UserContext);
   const { refreshProfile } = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
+  const [createdAt, setCreatedAt] = useState(null)
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
   const [userUsername, setUserUsername] = useState("");
@@ -117,6 +118,7 @@ export default function RegisterForm({ index, onStep }) {
             setFormError(error.message);
             throw error;
           }
+          console.log(userContext.session)
           console.log(`User OTP checked received.. Try again`);
           console.log(data);
           onStep();
@@ -145,16 +147,19 @@ export default function RegisterForm({ index, onStep }) {
         .from("user_profiles")
         .insert([
           {
-            user_id: user.session?.user.id || "",
+            //TODO: handle userContext not existing for whatever reason better
+            user_id: userContext.session?.user.id || "",
             username: userUsername,
+            phone_number: userContext.session?.user.phone || "",
+            created_at: userContext.session?.user.created_at || ""
           },
         ])
         .then(async ({ error }) => {
           if (error) {
-            setFormError(`Username "${userUsername}" is already taken`);
+            setFormError(error.message);
             return;
           } else {
-            await refreshProfile(user.session?.user.id);
+            await refreshProfile(userContext.session?.user.id);
             navigate("");
           }
         });
