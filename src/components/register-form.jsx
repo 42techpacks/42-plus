@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 RegisterForm.propTypes = {
   index: PropTypes.number.isRequired,
   onStep: PropTypes.func.isRequired,
-  _userPhoneNumber: PropTypes.string
+  _userPhoneNumber: PropTypes.string,
 };
 
 export default function RegisterForm({
@@ -19,7 +19,6 @@ export default function RegisterForm({
   onStep,
   _userPhoneNumber = "4077470791",
 }) {
-  console.log(`in register on ${index}`);
   const navigate = useNavigate();
 
   const userContext = useContext(UserContext);
@@ -39,7 +38,6 @@ export default function RegisterForm({
   };
 
   const updateUserUsername = (value) => {
-    console.log(value);
     setUserUsername(value);
   };
 
@@ -51,7 +49,6 @@ export default function RegisterForm({
       },
       buttonHandler: () => {
         setFormError("");
-        console.log(userPhoneNumber);
         console.log("checking user phone number...");
         supaClient.auth
           .signInWithOtp({
@@ -61,7 +58,6 @@ export default function RegisterForm({
             if (error) {
               setFormError(error.message);
             } else {
-              console.log(data);
               onStep();
             }
           });
@@ -75,8 +71,8 @@ export default function RegisterForm({
       buttonHandler: () => {
         setFormError("");
         console.log("checking user provided OTP...");
-        console.log(userPhoneNumber)
-        console.log(userOTP)
+        console.log(userPhoneNumber);
+        console.log(userOTP);
 
         supaClient.auth
           .verifyOtp({
@@ -121,7 +117,6 @@ export default function RegisterForm({
               return;
             } else {
               await userContext.refreshProfile(userContext.session?.user.id);
-              navigate("");
             }
           });
       },
@@ -140,11 +135,18 @@ export default function RegisterForm({
 
   const flowValues = [userPhoneNumber, userOTP, userUsername];
 
+  console.log(flowStep);
+  console.log(flowStep[index].description);
   return (
     <form className="login-form">
       <div className="header">
         <h4>{flowStep[index].header}</h4>
-        {flowStep[index].description && <p>{flowStep[index].description}</p>}
+        {flowStep[index].description && (
+          <p>
+            {flowStep[index].description}
+            {index === 1 && `${userCountry} ${userPhoneNumber}`}
+          </p>
+        )}
       </div>
       <div className="input-container">
         {/* Input Fields */}

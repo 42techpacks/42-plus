@@ -13,7 +13,7 @@ export const loginFormConfig = {
 
   otpVerify: {
     header: "OTP Verification",
-    description: "Enter the 6-digit code sent to +1 407-747-0791.",
+    description: "Enter the 6-digit code sent to +",
     inputTitle: "OTP Verification",
     inputType: "verify",
     inputPlaceholder: "4077470791",
@@ -40,6 +40,7 @@ export const registerFormConfig = {
 
   otpVerify: {
     header: "OTP Verification",
+    description: "Enter the 6-digit code sent to +",
     inputTitle: "OTP Verification",
     inputType: "verify",
     inputPlaceholder: "4077470791",

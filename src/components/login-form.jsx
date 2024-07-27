@@ -31,7 +31,7 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
         })
         .then(({ data, error }) => {
           if (error) {
-            console.error(error)
+            console.error(error);
             setShowRegistrationPrompt(false);
             setFormError("😖 Looks like things might be down on our end");
           } else {
@@ -121,11 +121,17 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
     setIsFormCompleted(currentInputValue.length === currentInputLength);
   }, [userPhoneNumber, userOTP, index]);
 
+  console.log(flowStep[index].description);
   return (
     <form className="login-form">
       <div className="header">
         <h4>{flowStep[index].header}</h4>
-        {flowStep[index].description && <p>{flowStep[index].description}</p>}
+        {flowStep[index].description && (
+          <p>
+          {flowStep[index].description}
+          {index === 1 && `${userCountry} ${userPhoneNumber}`}
+        </p>
+        )}
       </div>
       <div className="input-container">
         {/* Input Fields */}
@@ -147,7 +153,7 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
           <p>
             Signups are not allowed for OTP. Would you like to register instead?
           </p>
-          <button onClick={(e) => handleRegisterChoice(e, "yes")} > Yes </button>
+          <button onClick={(e) => handleRegisterChoice(e, "yes")}> Yes </button>
           <button onClick={(e) => handleRegisterChoice(e, "no")}>No</button>
         </div>
       )}
