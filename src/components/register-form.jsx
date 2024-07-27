@@ -6,13 +6,26 @@ import Button from "./button";
 import Input from "./input";
 import { registerFormConfig } from "../utils/formConfigs";
 
-export default function RegisterForm({ index, onStep }) {
+import PropTypes from "prop-types";
+
+RegisterForm.propTypes = {
+  index: PropTypes.number.isRequired,
+  onStep: PropTypes.func.isRequired,
+  _userPhoneNumber: PropTypes.string
+};
+
+export default function RegisterForm({
+  index,
+  onStep,
+  _userPhoneNumber = "4077470791",
+}) {
+  console.log(`in register on ${index}`);
   const navigate = useNavigate();
 
   const userContext = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
-  const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
+  const [userPhoneNumber, setUserPhoneNumber] = useState(_userPhoneNumber);
   const [userOTP, setUserOTP] = useState("123456");
   const [userUsername, setUserUsername] = useState("");
   const [formError, setFormError] = useState(false);
@@ -47,8 +60,7 @@ export default function RegisterForm({ index, onStep }) {
           .then(({ data, error }) => {
             if (error) {
               setFormError(error.message);
-            }
-            else {
+            } else {
               console.log(data);
               onStep();
             }
@@ -63,6 +75,8 @@ export default function RegisterForm({ index, onStep }) {
       buttonHandler: () => {
         setFormError("");
         console.log("checking user provided OTP...");
+        console.log(userPhoneNumber)
+        console.log(userOTP)
 
         supaClient.auth
           .verifyOtp({
@@ -75,7 +89,7 @@ export default function RegisterForm({ index, onStep }) {
               setFormError(error.message);
               throw error;
             }
-            console.log(userContext.session)
+            console.log(userContext.session);
             console.log(`User OTP checked received.. Try again`);
             console.log(data);
             onStep();
@@ -98,7 +112,7 @@ export default function RegisterForm({ index, onStep }) {
               user_id: userContext.session?.user.id || "",
               username: userUsername,
               phone_number: userContext.session?.user.phone || "",
-              created_at: userContext.session?.user.created_at || ""
+              created_at: userContext.session?.user.created_at || "",
             },
           ])
           .then(async ({ error }) => {
