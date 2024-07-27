@@ -1,14 +1,54 @@
-import React, { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../App";
 import "./beta-mini-site.css";
 import Card from "./card";
 import CreationList from "./creation-list";
+import { supaClient } from "../supa-client";
 
-export default function BetaMiniSite({ userCreationIndex }) {
+export default function BetaMiniSite() {
   const { profile } = useContext(UserContext);
   const [activeTab, setActiveTab] = useState("welcome");
   const [pageIndex, setPageIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState(0);
+  const [userCreationIndex, setUserCreationIndex] =useState(42)
+  const [orderedUserList, setOrderedUserList] = useState(["kennyosele", "npcmilo", "faizan.a"])
+
+  useEffect(() => {
+    supaClient.from('user_profiles')
+      .select('*')
+      .order('created_at', {ascending: true})
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('Error fetching user profiles:', error.message);
+          //  TODO: can set an error state here to display to the user
+          // setError(error.message);
+          return;
+        }
+
+        if (!data) {
+          console.warn('No data returned from user profiles query');
+          return;
+        }
+        try {
+          const usernames = data.map(profile => profile.username);
+          setOrderedUserList(usernames)
+          if (profile && profile.username) {
+            const userIndex = usernames.findIndex(username => username === profile.username);
+            if (userIndex !== -1) {
+              setUserCreationIndex(userIndex + 1); // Add 1 because array indices start at 0
+            } else {
+              console.warn(`Username ${profile.username} not found in the fetched data`);
+            }
+          } else {
+            console.warn('Profile or username is undefined');
+          }
+        } catch (error) {
+          console.error('Error processing user profiles data:', error);
+          // TODO: can set an error state here to display to the user
+          // setError('An error occurred while processing user data');
+        }
+      })
+  }, [profile])
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
@@ -17,7 +57,7 @@ export default function BetaMiniSite({ userCreationIndex }) {
 
   const onStep = (step) => {
     if (step === 0) {
-      console.log("ERROR: Step not complete");
+      console.error("ERROR: Step not complete");
     }
 
     setCompletedSteps(completedSteps + 1);
@@ -25,9 +65,6 @@ export default function BetaMiniSite({ userCreationIndex }) {
   };
 
   const handleArrowClick = (step) => {
-    console.log(pageIndex);
-    console.log(completedSteps);
-
     if (pageIndex + step > completedSteps - 1 || pageIndex + step < 0) return;
     setPageIndex(pageIndex + step);
     setCompletedSteps(pageIndex + step);
@@ -57,7 +94,7 @@ export default function BetaMiniSite({ userCreationIndex }) {
                 {
                   flowStep[pageIndex].buttonHandler
                     ? flowStep[pageIndex].buttonHandler()
-                    : console.log("on step");
+                    : () => {};
                 }
               }}
             >
@@ -83,7 +120,7 @@ export default function BetaMiniSite({ userCreationIndex }) {
 
           <div className="section">
             <h5>Anything else?</h5>
-            <p>Click on the "Announcement" tab!</p>
+            <p>Click on the &ldquoAnnouncement&rdquo tab!</p>
           </div>
         </div>
       </div>
@@ -94,8 +131,8 @@ export default function BetaMiniSite({ userCreationIndex }) {
     buttonHandler: () => onStep(),
     content: (
       <CreationList
-        orderedCreationList={["kennyosele", "npcmilo", "faizan.a"]}
-        userCreationIndex={2}
+        orderedCreationList={orderedUserList}
+        userCreationIndex={userCreationIndex}
       />
     ),
   };

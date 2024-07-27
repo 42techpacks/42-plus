@@ -11,7 +11,7 @@ export default function Home() {
     <>
       {userProfile.profile ? (
         <div className="home">
-          <BetaMiniSite userCreationIndex={"42"} />
+          <BetaMiniSite />
         </div>
       ) : (
         <LoginRegisterNew />
