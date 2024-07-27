@@ -15,7 +15,6 @@ export default function LoginRegisterNew({ _activeForm = "login" }) {
   const [activeForm, setActiveForm] = useState(_activeForm);
   const [pageIndex, setPageIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState(0);
-  console.log(activeForm)
 
   const handleTabClick = (form) => {
     setActiveForm(form);

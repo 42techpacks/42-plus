@@ -10,10 +10,8 @@ export default function RegisterForm({ index, onStep }) {
   const navigate = useNavigate();
 
   const userContext = useContext(UserContext);
-  const { refreshProfile } = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
-  const [createdAt, setCreatedAt] = useState(null)
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
   const [userUsername, setUserUsername] = useState("");
@@ -108,7 +106,7 @@ export default function RegisterForm({ index, onStep }) {
               setFormError(error.message);
               return;
             } else {
-              await refreshProfile(userContext.session?.user.id);
+              await userContext.refreshProfile(userContext.session?.user.id);
               navigate("");
             }
           });
