@@ -6,6 +6,7 @@ import { supaClient } from "../supa-client";
 import Button from "./button";
 import Input from "./input";
 import "./login-form.css";
+import { loginFormConfig } from "../utils/formConfigs";
 
 LoginForm.propTypes = {
   index: PropTypes.number.isRequired,
@@ -37,84 +38,65 @@ export default function LoginForm({ index, onStep }) {
     setUserOTP(value);
   };
 
-  const phoneNumber = {
-    header: "Login with Phone Number.",
-    onChange: (e) => {
-      updateUserPhoneNumber(e.target.value);
-    },
-    inputTitle: "Phone Number",
-    inputType: "phone",
-    inputPlaceholder: "4077470791",
-    inputLength: 10,
-    country: true,
-    footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
-    buttonLabel: "SEND CODE",
-    //TODO: this can be removed I believe
-    error: "ERROR: Invalid Phone Number",
-    buttonHandler: () => {
-      setFormError("");
-      console.log(userPhoneNumber);
-      console.log("checking user phone number...");
+  const flowStep = [
+    {
+      ...loginFormConfig.phoneNumber,
+      onChange: (e) => {
+        updateUserPhoneNumber(e.target.value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log(userPhoneNumber);
+        console.log("checking user phone number...");
 
-      supaClient.auth
-        .signInWithOtp({
-          phone: `1${userPhoneNumber}`,
-          options: {
-            shouldCreateUser: false,
-          },
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            console.log(error);
-            if (error.message === "Signups not allowed for otp") {
-              setShowRegistrationPrompt(true);
+        supaClient.auth
+          .signInWithOtp({
+            phone: `1${userPhoneNumber}`,
+            options: {
+              shouldCreateUser: false,
+            },
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              console.log(error);
+              if (error.message === "Signups not allowed for otp") {
+                setShowRegistrationPrompt(true);
+              } else {
+                setFormError(error.message);
+              }
             } else {
-              setFormError(error.message);
+              onStep();
+              console.log(`got ${data}`);
             }
-          } else {
-            onStep();
-            console.log(`got ${data}`);
-          }
-        });
+          });
+      },
     },
-  };
+    {
+      ...loginFormConfig.otpVerify,
+      onChange: (value) => {
+        updateUserOTP(value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user provided OTP...");
 
-  const otpVerify = {
-    header: "OTP Verification",
-    description: `"Enter the 6-digit code sent to +${userCountry} ${userPhoneNumber}."`,
-    onChange: (value) => {
-      updateUserOTP(value);
+        supaClient.auth
+          .verifyOtp({
+            phone: `1${userPhoneNumber}`,
+            token: userOTP,
+            type: "sms",
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+              throw error;
+            }
+            console.log(`User OTP check received.. Try again`);
+            console.log(data);
+          });
+      },
     },
-    inputTitle: "OTP Verification",
-    inputType: "verify",
-    inputPlaceholder: "4077470791",
-    inputLength: 6,
-    country: true,
-    footer: ``,
-    buttonLabel: "LOGIN",
-    error: "ERROR: Invalid Verification Code",
-    buttonHandler: () => {
-      setFormError("");
-      console.log("checking user provided OTP...");
-
-      supaClient.auth
-        .verifyOtp({
-          phone: `1${userPhoneNumber}`,
-          token: userOTP,
-          type: "sms",
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-            throw error;
-          }
-          console.log(`User OTP check received.. Try again`);
-          console.log(data);
-        });
-    },
-  };
-
-  const flowStep = [phoneNumber, otpVerify];
+  ];
 
   useEffect(() => {
     const currentInputLength = flowStep[index].inputLength;
