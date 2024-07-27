@@ -1,11 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
-
 import Button from "./button";
 import Input from "./input";
-
+import { registerFormConfig } from "../utils/formConfigs";
 
 export default function RegisterForm({ index, onStep }) {
   const navigate = useNavigate();
@@ -33,114 +32,89 @@ export default function RegisterForm({ index, onStep }) {
     setUserUsername(value);
   };
 
-  const phoneNumber = {
-    header: "Register with Phone Number.",
-    onChange: (e) => {
-      updateUserPhoneNumber(e.target.value);
+  const flowStep = [
+    {
+      ...registerFormConfig.phoneNumber,
+      onChange: (e) => {
+        updateUserPhoneNumber(e.target.value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log(userPhoneNumber);
+        console.log("checking user phone number...");
+        supaClient.auth
+          .signInWithOtp({
+            phone: `1${userPhoneNumber}`,
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+            }
+            else {
+              console.log(data);
+              onStep();
+            }
+          });
+      },
     },
-    inputTitle: "Phone Number",
-    inputType: "phone",
-    inputPlaceholder: "4077470791",
-    inputLength: 10,
-    country: true,
-    footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
-    buttonLabel: "SEND CODE",
-    error: "ERROR: Invalid Phone Number",
-    buttonHandler: () => {
-      setFormError("");
-      console.log(userPhoneNumber);
-      console.log("checking user phone number...");
-      supaClient.auth
-        .signInWithOtp({
-          phone: `1${userPhoneNumber}`,
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-          }
-          else {
+    {
+      ...registerFormConfig.otpVerify,
+      onChange: (value) => {
+        updateUserOTP(value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user provided OTP...");
+
+        supaClient.auth
+          .verifyOtp({
+            phone: `1${userPhoneNumber}`,
+            token: userOTP,
+            type: "sms",
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+              throw error;
+            }
+            console.log(userContext.session)
+            console.log(`User OTP checked received.. Try again`);
             console.log(data);
             onStep();
-          }
-        });
+          });
+      },
     },
-  };
-
-  const otpVerify = {
-    header: "OTP Verification",
-    onChange: (value) => {
-      updateUserOTP(value);
+    {
+      ...registerFormConfig.personalInfo,
+      onChange: (value) => {
+        updateUserUsername(value);
+      },
+      buttonHandler: () => {
+        console.log("redirecting...");
+        setFormError("");
+        supaClient
+          .from("user_profiles")
+          .insert([
+            {
+              //TODO: handle userContext not existing for whatever reason better
+              user_id: userContext.session?.user.id || "",
+              username: userUsername,
+              phone_number: userContext.session?.user.phone || "",
+              created_at: userContext.session?.user.created_at || ""
+            },
+          ])
+          .then(async ({ error }) => {
+            if (error) {
+              setFormError(error.message);
+              return;
+            } else {
+              await refreshProfile(userContext.session?.user.id);
+              navigate("");
+            }
+          });
+      },
     },
-    inputTitle: "OTP Verification",
-    inputType: "verify",
-    inputPlaceholder: "4077470791",
-    inputLength: 6,
-    country: true,
-    footer: ``,
-    buttonLabel: "VERIFY",
-    error: "ERROR: Invalid Verification Code",
-    buttonHandler: () => {
-      setFormError("");
-      console.log("checking user provided OTP...");
-
-      supaClient.auth
-        .verifyOtp({
-          phone: `1${userPhoneNumber}`,
-          token: userOTP,
-          type: "sms",
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-            throw error;
-          }
-          console.log(userContext.session)
-          console.log(`User OTP checked received.. Try again`);
-          console.log(data);
-          onStep();
-        });
-    },
-  };
-
-  const personalInfo = {
-    header: "Registration Complete",
-    onChange: (value) => {
-      updateUserUsername(value);
-    },
-    description: "Welcome to 42+. Set your account username below.",
-    inputTitle: "Username",
-    inputType: "username",
-    inputPlaceholder: "npcmilo",
-    inputLength: -1,
-    country: true,
-    footer: ``,
-    buttonLabel: "ENTER 42+",
-    error: "ERROR: Username is already taken",
-    buttonHandler: () => {
-      console.log("redirecting...");
-      setFormError("");
-      supaClient
-        .from("user_profiles")
-        .insert([
-          {
-            //TODO: handle userContext not existing for whatever reason better
-            user_id: userContext.session?.user.id || "",
-            username: userUsername,
-            phone_number: userContext.session?.user.phone || "",
-            created_at: userContext.session?.user.created_at || ""
-          },
-        ])
-        .then(async ({ error }) => {
-          if (error) {
-            setFormError(error.message);
-            return;
-          } else {
-            await refreshProfile(userContext.session?.user.id);
-            navigate("");
-          }
-        });
-    },
-  };
+  ];
 
   useEffect(() => {
     const currentInputLength = flowStep[index].inputLength;
@@ -152,7 +126,6 @@ export default function RegisterForm({ index, onStep }) {
     }
   }, [userPhoneNumber, userOTP, userUsername, index]);
 
-  const flowStep = [phoneNumber, otpVerify, personalInfo];
   const flowValues = [userPhoneNumber, userOTP, userUsername];
 
   return (
