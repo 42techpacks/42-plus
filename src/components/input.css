@@ -31,7 +31,7 @@ h7 {
     font-size: 14px;
 }
 
-/* Phone Inputs */ 
+/* Phone Inputs */
 
 #phone-container {
     display: flex;
@@ -51,7 +51,8 @@ h7 {
     gap: 2px;
 }
 
-.inner-phone, .outer-phone {
+.inner-phone,
+.outer-phone {
     display: flex;
 }
 
@@ -73,7 +74,7 @@ h7 {
     box-sizing: border-box;
 }
 
-.inner-phone img{
+.inner-phone img {
     height: 100%;
     width: auto;
 }
@@ -90,11 +91,11 @@ h7 {
 }
 
 #country-input {
-    width: 30px;
+    width: 60px;
     text-align: center;
 }
 
-/* OTP */ 
+/* OTP */
 
 .outer-otp {
     width: 90%;
@@ -109,7 +110,7 @@ h7 {
     align-items: center;
 }
 
-/* Default */ 
+/* Default */
 
 .inner {
     border: 1px solid black;
