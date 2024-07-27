@@ -67,7 +67,7 @@ export default function LoginForm({ index, onStep }) {
 
   const otpVerify = {
     header: "OTP Verification",
-    description: "Enter the 6-digit code sent to +1 407-747-0791.",
+    description: `"Enter the 6-digit code sent to +${userCountry} ${userPhoneNumber}."`,
     onChange: (value) => {
       updateUserOTP(value);
     },
