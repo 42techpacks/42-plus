@@ -120,7 +120,7 @@ export default function BetaMiniSite() {
 
           <div className="section">
             <h5>Anything else?</h5>
-            <p>Click on the &ldquoAnnouncement&rdquo tab!</p>
+            <p>Click on the &apos;Announcement&apos; tab!</p>
           </div>
         </div>
       </div>
