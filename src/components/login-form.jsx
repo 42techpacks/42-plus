@@ -18,6 +18,16 @@ export default function LoginForm({ index, onStep }) {
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
   const [formError, setFormError] = useState("");
+  const [showRegistrationPrompt, setShowRegistrationPrompt] = useState(false);
+
+  const handleRegisterChoice = (choice) => {
+    if (choice === 'yes') {
+      navigate('/register'); // Redirect to registration page
+    } else {
+      setShowRegistrationPrompt(false);
+      setFormError('Signups not allowed for otp');
+    }
+  };
 
   const updateUserPhoneNumber = (value) => {
     setUserPhoneNumber(value);
@@ -56,7 +66,11 @@ export default function LoginForm({ index, onStep }) {
         .then(({ data, error }) => {
           if (error) {
             console.log(error);
-            setFormError(error.message);
+            if (error.message === "Signups not allowed for otp") {
+              setShowRegistrationPrompt(true);
+            } else {
+              setFormError(error.message);
+            }
           } else {
             onStep();
             console.log(`got ${data}`);
@@ -129,7 +143,14 @@ export default function LoginForm({ index, onStep }) {
         </div>
         <p>{flowStep[index].footer}</p>
       </div>
-      {formError && (
+      {showRegistrationPrompt && (
+        <div className="registration-prompt">
+          <p>Signups are not allowed for OTP. Would you like to register instead?</p>
+          <button onClick={() => handleRegisterChoice('yes')}>Yes</button>
+          <button onClick={() => handleRegisterChoice('no')}>No</button>
+        </div>
+      )}
+      {formError && !showRegistrationPrompt && (
         <p id="register-form-error" className="error-text">
           {formError}
         </p>
