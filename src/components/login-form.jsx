@@ -43,7 +43,6 @@ export default function LoginForm({
           } else {
             console.log(`signed user up got ${data}`);
             setActiveForm("register", userPhoneNumber);
-            onStep();
             setIsFormCompleted(false);
           }
         });
@@ -70,7 +69,6 @@ export default function LoginForm({
       },
       buttonHandler: () => {
         setFormError("");
-        console.log(userPhoneNumber);
         console.log("checking user phone number...");
 
         supaClient.auth
@@ -82,10 +80,9 @@ export default function LoginForm({
           })
           .then(({ data, error }) => {
             if (error) {
-              console.log(error);
+              console.error(error);
               if (error.message === "Signups not allowed for otp") {
-                console.log("setting page index to 2");
-                setPageIndex(2);
+                setPageIndex(2); //change to account not found view
               } else {
                 setFormError(error.message);
               }
@@ -134,8 +131,6 @@ export default function LoginForm({
     const currentInputValue = index === 0 ? userPhoneNumber : userOTP;
     setIsFormCompleted(currentInputValue.length === currentInputLength);
   }, [userPhoneNumber, userOTP, index]);
-
-  console.log(flowStep[index].description);
 
   // let input = (
   //   <Input

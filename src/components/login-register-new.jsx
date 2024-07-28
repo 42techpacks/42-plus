@@ -24,10 +24,6 @@ export default function LoginRegisterNew({ _activeForm = "login" }) {
   };
 
   const handleArrowClick = (step) => {
-    console.log("Page Index: " + pageIndex);
-    console.log("Completed Steps: " + completedSteps);
-    console.log("Step: " + step);
-
     /* Edge Case: Account Not Found */
     if (pageIndex === 2 && completedSteps === 0) {
       setPageIndex(0);
@@ -42,7 +38,7 @@ export default function LoginRegisterNew({ _activeForm = "login" }) {
 
   const handleStepComplete = (step) => {
     if (step === 0) {
-      console.log("ERROR: Step not complete");
+      console.error("ERROR: Step not complete");
     }
 
     setCompletedSteps(completedSteps + 1);
@@ -50,12 +46,10 @@ export default function LoginRegisterNew({ _activeForm = "login" }) {
   };
 
   const handleSetActiveForm = (form, phone = "") => {
-    console.log(`updated page index ${pageIndex}`);
-    setPageIndex(0);
-    setActiveForm(form);
     setCompletedSteps(0);
     setPhoneNumber(phone);
-    console.log(`updated page index ${pageIndex}`);
+    setActiveForm(form);
+    setPageIndex(1);
   };
 
   return (
