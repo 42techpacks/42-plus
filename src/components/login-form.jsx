@@ -44,6 +44,11 @@ export default function LoginForm({
             console.log(`signed user up got ${data}`);
             setActiveForm("register", userPhoneNumber);
             setIsFormCompleted(false);
+            const tabs = document.querySelectorAll(".card-tab");
+            tabs.forEach((t) => t.classList.remove("selected"));
+            document
+              .querySelector(`.card-tab-${"register"}`)
+              .classList.add("selected");
           }
         });
     } else {
