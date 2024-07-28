@@ -4,7 +4,7 @@ import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
 import Button from "./button";
 import Input from "./input";
-import { registerFormConfig } from "../utils/formConfigs";
+import { registerFormConfig } from "../utils/form-config";
 
 import PropTypes from "prop-types";
 
@@ -19,8 +19,6 @@ export default function RegisterForm({
   onStep,
   _userPhoneNumber = "4077470791",
 }) {
-  const navigate = useNavigate();
-
   const userContext = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
@@ -136,7 +134,7 @@ export default function RegisterForm({
   const flowValues = [userPhoneNumber, userOTP, userUsername];
 
   console.log(flowStep);
-  console.log(flowStep[index].description);
+  console.log(index);
   return (
     <form className="login-form">
       <div className="header">
