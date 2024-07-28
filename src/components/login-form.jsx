@@ -4,17 +4,24 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 import Button from "./button";
-import Input from "./input";
 import "./login-form.css";
-import { loginFormConfig } from "../utils/formConfigs";
+import { loginFormConfig } from "../utils/form-config";
+import PhoneInput from "./phone-input";
+import VerifyInput from "./verify-input";
+import UsernameInput from "./username-input";
 
 LoginForm.propTypes = {
   index: PropTypes.number.isRequired,
   onStep: PropTypes.func.isRequired,
   setActiveForm: PropTypes.func.isRequired,
+  setPageIndex: PropTypes.func.isRequired,
 };
-export default function LoginForm({ index, onStep, setActiveForm }) {
-  const navigate = useNavigate();
+export default function LoginForm({
+  index,
+  onStep,
+  setActiveForm,
+  setPageIndex,
+}) {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
@@ -22,28 +29,31 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
   const [formError, setFormError] = useState("");
   const [showRegistrationPrompt, setShowRegistrationPrompt] = useState(false);
 
-  const handleRegisterChoice = (e, choice) => {
-    e.preventDefault();
+  const handleRegisterChoice = (choice) => {
     if (choice === "yes") {
       supaClient.auth
         .signInWithOtp({
-          phone: `1${userPhoneNumber}`,
+          phone: `${userCountry}${userPhoneNumber}`,
         })
         .then(({ data, error }) => {
           if (error) {
             console.error(error);
-            setShowRegistrationPrompt(false);
             setFormError("😖 Looks like things might be down on our end");
           } else {
             console.log(`signed user up got ${data}`);
             setActiveForm("register", userPhoneNumber);
-            onStep();
             setIsFormCompleted(false);
+            const tabs = document.querySelectorAll(".card-tab");
+            tabs.forEach((t) => t.classList.remove("selected"));
+            document
+              .querySelector(`.card-tab-${"register"}`)
+              .classList.add("selected");
           }
         });
     } else {
-      setShowRegistrationPrompt(false);
-      setFormError("Signups not allowed for otp");
+      setFormError(
+        "🙁 Don't know what to tell ya mate... no sign up... no plus",
+      );
     }
   };
 
@@ -63,21 +73,20 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
       },
       buttonHandler: () => {
         setFormError("");
-        console.log(userPhoneNumber);
         console.log("checking user phone number...");
 
         supaClient.auth
           .signInWithOtp({
-            phone: `1${userPhoneNumber}`,
+            phone: `${userCountry}${userPhoneNumber}`,
             options: {
               shouldCreateUser: false,
             },
           })
           .then(({ data, error }) => {
             if (error) {
-              console.log(error);
+              console.error(error);
               if (error.message === "Signups not allowed for otp") {
-                setShowRegistrationPrompt(true);
+                setPageIndex(2); //change to account not found view
               } else {
                 setFormError(error.message);
               }
@@ -99,7 +108,7 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
 
         supaClient.auth
           .verifyOtp({
-            phone: `1${userPhoneNumber}`,
+            phone: `${userCountry}${userPhoneNumber}`,
             token: userOTP,
             type: "sms",
           })
@@ -113,6 +122,12 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
           });
       },
     },
+    {
+      ...loginFormConfig.registerPrompt,
+      buttonHandler: () => {
+        handleRegisterChoice("yes");
+      },
+    },
   ];
 
   useEffect(() => {
@@ -121,43 +136,55 @@ export default function LoginForm({ index, onStep, setActiveForm }) {
     setIsFormCompleted(currentInputValue.length === currentInputLength);
   }, [userPhoneNumber, userOTP, index]);
 
-  console.log(flowStep[index].description);
+  let input = <></>;
+  if (flowStep[index].inputType == "phone") {
+    input = (
+      <PhoneInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        updateCountryState={setUserCountry}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "verify") {
+    input = (
+      <VerifyInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "username") {
+    input = (
+      <UsernameInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  }
+
   return (
     <form className="login-form">
       <div className="header">
         <h4>{flowStep[index].header}</h4>
         {flowStep[index].description && (
           <p>
-          {flowStep[index].description}
-          {index === 1 && `${userCountry} ${userPhoneNumber}`}
-        </p>
+            {flowStep[index].description}
+            {index === 1 && `${userCountry} ${userPhoneNumber}`}
+          </p>
         )}
       </div>
       <div className="input-container">
         {/* Input Fields */}
-        <div className="inputs">
-          <Input
-            onChange={flowStep[index].onChange}
-            updateState={setIsFormCompleted}
-            title={flowStep[index].inputTitle}
-            type={flowStep[index].inputType}
-            placeholder={flowStep[index].inputPlaceholder}
-            numbers={flowStep[index].inputLength}
-            country={flowStep[index].country}
-          ></Input>
-        </div>
+        <div className="inputs">{input}</div>
         <p>{flowStep[index].footer}</p>
       </div>
-      {showRegistrationPrompt && (
-        <div className="registration-prompt">
-          <p>
-            Signups are not allowed for OTP. Would you like to register instead?
-          </p>
-          <button onClick={(e) => handleRegisterChoice(e, "yes")}> Yes </button>
-          <button onClick={(e) => handleRegisterChoice(e, "no")}>No</button>
-        </div>
-      )}
-      {formError && !showRegistrationPrompt && (
+
+      {formError && (
         <p id="register-form-error" className="error-text">
           {formError}
         </p>

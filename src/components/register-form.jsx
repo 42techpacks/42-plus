@@ -3,8 +3,10 @@ import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
 import Button from "./button";
-import Input from "./input";
-import { registerFormConfig } from "../utils/formConfigs";
+import PhoneInput from "./phone-input";
+import VerifyInput from "./verify-input";
+import UsernameInput from "./username-input";
+import { registerFormConfig } from "../utils/form-config";
 
 import PropTypes from "prop-types";
 
@@ -19,8 +21,6 @@ export default function RegisterForm({
   onStep,
   _userPhoneNumber = "4077470791",
 }) {
-  const navigate = useNavigate();
-
   const userContext = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
@@ -136,7 +136,38 @@ export default function RegisterForm({
   const flowValues = [userPhoneNumber, userOTP, userUsername];
 
   console.log(flowStep);
-  console.log(flowStep[index].description);
+  console.log(index);
+
+  let input = <></>;
+  if (flowStep[index].inputType == "phone") {
+    input = (
+      <PhoneInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        updateCountryState={setUserCountry}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "verify") {
+    input = (
+      <VerifyInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "username") {
+    input = (
+      <UsernameInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  }
   return (
     <form className="login-form">
       <div className="header">
@@ -150,17 +181,7 @@ export default function RegisterForm({
       </div>
       <div className="input-container">
         {/* Input Fields */}
-        <div className="inputs">
-          <Input
-            onChange={flowStep[index].onChange}
-            updateState={setIsFormCompleted}
-            title={flowStep[index].inputTitle}
-            type={flowStep[index].inputType}
-            placeholder={flowStep[index].inputPlaceholder}
-            numbers={flowStep[index].inputLength}
-            country={flowStep[index].country}
-          ></Input>
-        </div>
+        <div className="inputs"> {input} </div>
         <p>
           {flowStep[index].footer}
           {flowStep[index].link}

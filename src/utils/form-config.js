@@ -23,6 +23,20 @@ export const loginFormConfig = {
     buttonLabel: "LOGIN",
     error: "ERROR: Invalid Verification Code",
   },
+
+  registerPrompt: {
+    header: "Account Not Found.",
+    description:
+      "This phone number is not currently registered. Proceed to registration?",
+    inputTitle: "",
+    inputType: "",
+    inputPlaceholder: "",
+    inputLength: 6,
+    country: true,
+    footer: ``,
+    buttonLabel: "REGISTER NOW",
+    error: "ERROR: Invalid Verification Code",
+  },
 };
 
 export const registerFormConfig = {
