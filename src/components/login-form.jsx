@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 import Button from "./button";
-import Input from "./input";
 import "./login-form.css";
 import { loginFormConfig } from "../utils/form-config";
 import PhoneInput from "./phone-input";
@@ -137,23 +136,13 @@ export default function LoginForm({
     setIsFormCompleted(currentInputValue.length === currentInputLength);
   }, [userPhoneNumber, userOTP, index]);
 
-  // let input = (
-  //   <Input
-  //     onChange={flowStep[index].onChange}
-  //     updateState={setIsFormCompleted}
-  //     title={flowStep[index].inputTitle}
-  //     type={flowStep[index].inputType}
-  //     placeholder={flowStep[index].inputPlaceholder}
-  //     numbers={flowStep[index].inputLength}
-  //     country={flowStep[index].country}
-  //   ></Input>
-  // );
   let input = <></>;
   if (flowStep[index].inputType == "phone") {
     input = (
       <PhoneInput
         onChange={flowStep[index].onChange}
         updateState={setIsFormCompleted}
+        updateCountryState={setUserCountry}
         title={flowStep[index].inputTitle}
         country={flowStep[index].country}
       />

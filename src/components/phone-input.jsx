@@ -26,7 +26,9 @@ export default function PhoneInput({
             id="country-input"
             maxLength="4"
             defaultValue="+1"
-            // onChange={(e) => {}}
+            onChange={(e) => {
+              updateCountryState(e.target.value)
+            }}
           />
         </div>
       )}
