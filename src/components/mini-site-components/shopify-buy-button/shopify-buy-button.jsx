@@ -1,7 +1,12 @@
-import React from "react";
 import Button from "../../button";
 
 import "./shopify-buy-button.css";
+
+import PropTypes from 'prop-types';
+
+ShopifyBuyButton.propTypes = {
+  productID: PropTypes.string.isRequired
+};
 
 export default function ShopifyBuyButton({ productID }) {
   /* TO-DO: Link to Shopify StorefrontAPI */

@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 
 // function to set the return path in local storage
@@ -18,8 +17,6 @@ export const setReturnPath = () => {
  * @return {*}
  */
 export function useSession() {
-  const navigate = useNavigate();
-
   // State for session rest of app uses
   const [userInfo, setUserInfo] = useState({
     profile: null,

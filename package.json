@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@shopify/storefront-api-client": "^1.0.1",
     "@supabase/supabase-js": "^2.44.4",
     "gsap": "^3.12.5",
     "posthog-js": "^1.151.0",
