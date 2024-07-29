@@ -1,6 +1,11 @@
-import { useState } from 'react';
-import { shopifyClient } from '../utils/shopify-client';
-import { PRODUCTS_QUERY, REMOVE_FROM_CART_MUTATION, CREATE_CART_MUTATION, ADD_TO_CART_MUTATION } from '../utils/shopify-queries';}
+import { useState } from "react";
+import { shopifyClient } from "../utils/shopify-client";
+import {
+  PRODUCTS_QUERY,
+  REMOVE_FROM_CART_MUTATION,
+  CREATE_CART_MUTATION,
+  ADD_TO_CART_MUTATION,
+} from "../utils/shopify-queries";
 
 function useShopify() {
   const [isLoading, setIsLoading] = useState(false);
@@ -10,7 +15,9 @@ function useShopify() {
     setIsLoading(true);
     setError(null);
     try {
-      const { data, errors } = await shopifyClient.request(query, { variables });
+      const { data, errors } = await shopifyClient.request(query, {
+        variables,
+      });
       if (errors) {
         throw new Error(errors[0].message);
       }
@@ -39,8 +46,8 @@ function useShopify() {
     const result = await executeQuery(CREATE_CART_MUTATION, {
       input: {
         lines: [{ merchandiseId: variantId, quantity }],
-        attributes: [{ key: "cart_redirect_url", value: redirectUrl }]
-      }
+        attributes: [{ key: "cart_redirect_url", value: redirectUrl }],
+      },
     });
     return result?.cartCreate?.cart?.checkoutUrl;
   };
@@ -48,13 +55,13 @@ function useShopify() {
   const addToCart = (cartId, variantId, quantity) =>
     executeQuery(ADD_TO_CART_MUTATION, {
       cartId,
-      lines: [{ merchandiseId: variantId, quantity }]
+      lines: [{ merchandiseId: variantId, quantity }],
     });
 
   const removeFromCart = (cartId, lineId) =>
     executeQuery(REMOVE_FROM_CART_MUTATION, {
       cartId,
-      lineIds: [lineId]
+      lineIds: [lineId],
     });
 
   return {
@@ -67,7 +74,7 @@ function useShopify() {
       removeFromCart,
     },
     isLoading,
-    error
+    error,
   };
 }
 

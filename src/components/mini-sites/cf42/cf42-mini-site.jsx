@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./cf42-mini-site.css";
 import Card from "../../card";
-import ShopifyBuyButton from "../../mini-site-components/shopify-buy-button/shopify-buy-button";
+import ShopifyBuyButton from "../../shopify-buy-button/shopify-buy-button";
 import CF42Card from "./cf42-card";
 import Enter from "./enter/enter";
 import Button from "../../button";

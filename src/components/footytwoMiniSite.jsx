@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Card from "./card";
 
 import "./footytwoMiniSite.css";
-import ItemSelectionOption from "./mini-site-components/shopify-buy-button/item-selection-option";
-import ShopifyBuyButton from "./mini-site-components/shopify-buy-button/shopify-buy-button";
+import ItemSelectionOption from "./shopify-buy-button/item-selection-option";
+import ShopifyBuyButton from "./shopify-buy-button/shopify-buy-button";
 
 export default function FootytwoMiniSite() {
   const [activeTab, setActiveTab] = useState("main");
@@ -27,7 +27,9 @@ export default function FootytwoMiniSite() {
               <span className="price">$86</span>
             </h4>
           </div>
-          <ShopifyBuyButton productID={"42"} />
+          <ShopifyBuyButton
+            variantId={"gid://shopify/ProductVariant/45633232601302"}
+          />
         </div>
       </div>
       <div className="item-selection">
