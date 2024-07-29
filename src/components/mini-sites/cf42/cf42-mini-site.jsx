@@ -12,6 +12,9 @@ export default function CF42MiniSite() {
   const handleNavClick = (page) => {
     console.log("CF42 Nav item clicked..." + page);
     setActivePage(page);
+    const pages = document.querySelectorAll(".cf42-nav-item");
+    pages.forEach((p) => p.classList.remove("selected"));
+    document.querySelector(`.cf42-nav-${page}`).classList.add("selected");
   };
 
   const home = (
@@ -54,10 +57,16 @@ export default function CF42MiniSite() {
       <Card title="CF42" url={"CF42.exe"}>
         {activePage !== "enter" && (
           <div className="cf42-nav">
-            <a className="selected" onClick={() => handleNavClick("home")}>
+            <a
+              className="cf42-nav-item cf42-nav-home selected"
+              onClick={() => handleNavClick("home")}
+            >
               Home
             </a>
-            <a className="" onClick={() => handleNavClick("store")}>
+            <a
+              className="cf42-nav-item cf42-nav-store"
+              onClick={() => handleNavClick("store")}
+            >
               Store
             </a>
           </div>
