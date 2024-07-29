@@ -10,45 +10,54 @@ export default function BetaMiniSite() {
   const [activeTab, setActiveTab] = useState("welcome");
   const [pageIndex, setPageIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState(0);
-  const [userCreationIndex, setUserCreationIndex] =useState(42)
-  const [orderedUserList, setOrderedUserList] = useState(["kennyosele", "npcmilo", "faizan.a"])
+  const [userCreationIndex, setUserCreationIndex] = useState(42);
+  const [orderedUserList, setOrderedUserList] = useState([
+    "kennyosele",
+    "npcmilo",
+    "faizan.a",
+  ]);
 
   useEffect(() => {
-    supaClient.from('user_profiles')
-      .select('*')
-      .order('created_at', {ascending: true})
+    supaClient
+      .from("user_profiles")
+      .select("*")
+      .order("created_at", { ascending: true })
       .then(({ data, error }) => {
         if (error) {
-          console.error('Error fetching user profiles:', error.message);
+          console.error("Error fetching user profiles:", error.message);
           //  TODO: can set an error state here to display to the user
           // setError(error.message);
           return;
         }
 
         if (!data) {
-          console.warn('No data returned from user profiles query');
+          console.warn("No data returned from user profiles query");
           return;
         }
         try {
-          const usernames = data.map(profile => profile.username);
-          setOrderedUserList(usernames)
+          const usernames = data.map((profile) => profile.username);
+          setOrderedUserList(usernames);
           if (profile && profile.username) {
-            const userIndex = usernames.findIndex(username => username === profile.username);
+            const userIndex = usernames.findIndex(
+              (username) => username === profile.username,
+            );
             if (userIndex !== -1) {
               setUserCreationIndex(userIndex + 1); // Add 1 because array indices start at 0
             } else {
-              console.warn(`Username ${profile.username} not found in the fetched data`);
+              console.warn(
+                `Username ${profile.username} not found in the fetched data`,
+              );
             }
           } else {
-            console.warn('Profile or username is undefined');
+            console.warn("Profile or username is undefined");
           }
         } catch (error) {
-          console.error('Error processing user profiles data:', error);
+          console.error("Error processing user profiles data:", error);
           // TODO: can set an error state here to display to the user
           // setError('An error occurred while processing user data');
         }
-      })
-  }, [profile])
+      });
+  }, [profile]);
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);

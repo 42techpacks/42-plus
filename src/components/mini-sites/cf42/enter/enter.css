@@ -1,0 +1,67 @@
+#enter-container {
+    display: flex;
+    flex-direction: column;
+    height: 400px;
+    width: 100%;
+    overflow: visible;
+}
+
+.enter-column {
+    width: 100%;
+    height: 95%;
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+    gap: 8%;
+    overflow: visible;
+}
+
+.full {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+}
+
+#enter-footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+}
+
+#enter-footer p {
+    font-size: calc(0.6em);
+    font-weight: 100;
+    text-align: center;
+    opacity: 0.5;
+}
+
+#enter-logo-container {
+    width: calc(15em + 15vw);
+    height: auto;
+    overflow: visible;
+}
+
+#enter-logo-container .hero {
+    width: 100%;
+    overflow: visible;
+}
+
+/* SVG Styling */
+#cf42 {
+    overflow: visible;
+}
+
+#cf42-master-group {
+    overflow: visible;
+    width: 100%;
+}
+
+.hero {
+    overflow: visible;
+    overflow-x: visible;
+}
