@@ -20,7 +20,7 @@ export default function BetaMiniSite() {
   useEffect(() => {
     supaClient
       .from("user_profiles")
-      .select("*")
+      .select("username")
       .order("created_at", { ascending: true })
       .then(({ data, error }) => {
         if (error) {
