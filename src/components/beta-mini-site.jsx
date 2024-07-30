@@ -116,15 +116,19 @@ export default function BetaMiniSite() {
           <div className="section">
             <h5>What is 42+?</h5>
             <p>
-              42+ is an exclusive online environment where you can explore 42
-              products, content, hidden secrets, and other in-house digital
-              experiences.
+              42+ is our digital environment where you can explore 42 products,
+              content, hidden secrets, and other virtual experiences built
+              in-house.
             </p>
           </div>
 
           <div className="section">
             <h5>What can I expect?</h5>
-            <p>Special items. Short films. Games. Contests. Everything 42.</p>
+            <p>
+              {" "}
+              Exclusive access. Special items. Short films. Games. Contests.
+              Everything 42.
+            </p>
           </div>
 
           <div className="section">
