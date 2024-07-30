@@ -4,20 +4,58 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supaClient } from "../supa-client";
 import Button from "./button";
-import Input from "./input";
 import "./login-form.css";
+import { loginFormConfig } from "../utils/form-config";
+import PhoneInput from "./phone-input";
+import VerifyInput from "./verify-input";
+import UsernameInput from "./username-input";
 
 LoginForm.propTypes = {
   index: PropTypes.number.isRequired,
   onStep: PropTypes.func.isRequired,
+  setActiveForm: PropTypes.func.isRequired,
+  setPageIndex: PropTypes.func.isRequired,
 };
-export default function LoginForm({ index, onStep }) {
-  const navigate = useNavigate();
+export default function LoginForm({
+  index,
+  onStep,
+  setActiveForm,
+  setPageIndex,
+}) {
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
   const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
   const [userOTP, setUserOTP] = useState("123456");
   const [formError, setFormError] = useState("");
+  const [showRegistrationPrompt, setShowRegistrationPrompt] = useState(false);
+
+  const handleRegisterChoice = (choice) => {
+    if (choice === "yes") {
+      supaClient.auth
+        .signInWithOtp({
+          phone: `${userCountry}${userPhoneNumber}`,
+        })
+        .then(({ data, error }) => {
+          if (error) {
+            console.error(error);
+            setFormError("😖 Looks like things might be down on our end");
+          } else {
+            console.log(`signed user up got ${data}`);
+            setActiveForm("register", userPhoneNumber);
+            setIsFormCompleted(false);
+            const tabs = document.querySelectorAll(".card-tab");
+            tabs.forEach((t) => t.classList.remove("selected"));
+            document
+              .querySelector(`.card-tab-${"register"}`)
+              .classList.add("selected");
+          }
+        });
+    } else {
+      setFormError(
+        "🙁 Don't know what to tell ya mate... no sign up... no plus",
+      );
+    }
+  };
 
   const updateUserPhoneNumber = (value) => {
     setUserPhoneNumber(value);
@@ -27,80 +65,70 @@ export default function LoginForm({ index, onStep }) {
     setUserOTP(value);
   };
 
-  const phoneNumber = {
-    header: "Login with Phone Number.",
-    onChange: (e) => {
-      updateUserPhoneNumber(e.target.value);
-    },
-    inputTitle: "Phone Number",
-    inputType: "phone",
-    inputPlaceholder: "4077470791",
-    inputLength: 10,
-    country: true,
-    footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
-    buttonLabel: "SEND CODE",
-    //TODO: this can be removed I believe
-    error: "ERROR: Invalid Phone Number",
-    buttonHandler: () => {
-      setFormError("");
-      console.log(userPhoneNumber);
-      console.log("checking user phone number...");
+  const flowStep = [
+    {
+      ...loginFormConfig.phoneNumber,
+      onChange: (e) => {
+        updateUserPhoneNumber(e.target.value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user phone number...");
 
-      supaClient.auth
-        .signInWithOtp({
-          phone: `1${userPhoneNumber}`,
-          options: {
-            shouldCreateUser: false,
-          },
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            console.log(error);
-            setFormError(error.message);
-          } else {
-            onStep();
-            console.log(`got ${data}`);
-          }
-        });
+        supaClient.auth
+          .signInWithOtp({
+            phone: `${userCountry}${userPhoneNumber}`,
+            options: {
+              shouldCreateUser: false,
+            },
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              console.error(error);
+              if (error.message === "Signups not allowed for otp") {
+                setPageIndex(2); //change to account not found view
+              } else {
+                setFormError(error.message);
+              }
+            } else {
+              onStep();
+              console.log(`got ${data}`);
+            }
+          });
+      },
     },
-  };
+    {
+      ...loginFormConfig.otpVerify,
+      onChange: (value) => {
+        updateUserOTP(value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user provided OTP...");
 
-  const otpVerify = {
-    header: "OTP Verification",
-    description: "Enter the 6-digit code sent to +1 407-747-0791.",
-    onChange: (value) => {
-      updateUserOTP(value);
+        supaClient.auth
+          .verifyOtp({
+            phone: `${userCountry}${userPhoneNumber}`,
+            token: userOTP,
+            type: "sms",
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+              throw error;
+            }
+            console.log(`User OTP check received.. Try again`);
+            console.log(data);
+          });
+      },
     },
-    inputTitle: "OTP Verification",
-    inputType: "verify",
-    inputPlaceholder: "4077470791",
-    inputLength: 6,
-    country: true,
-    footer: ``,
-    buttonLabel: "LOGIN",
-    error: "ERROR: Invalid Verification Code",
-    buttonHandler: () => {
-      setFormError("");
-      console.log("checking user provided OTP...");
-
-      supaClient.auth
-        .verifyOtp({
-          phone: `1${userPhoneNumber}`,
-          token: userOTP,
-          type: "sms",
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-            throw error;
-          }
-          console.log(`User OTP check received.. Try again`);
-          console.log(data);
-        });
+    {
+      ...loginFormConfig.registerPrompt,
+      buttonHandler: () => {
+        handleRegisterChoice("yes");
+      },
     },
-  };
-
-  const flowStep = [phoneNumber, otpVerify];
+  ];
 
   useEffect(() => {
     const currentInputLength = flowStep[index].inputLength;
@@ -108,27 +136,54 @@ export default function LoginForm({ index, onStep }) {
     setIsFormCompleted(currentInputValue.length === currentInputLength);
   }, [userPhoneNumber, userOTP, index]);
 
+  let input = <></>;
+  if (flowStep[index].inputType == "phone") {
+    input = (
+      <PhoneInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        updateCountryState={setUserCountry}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "verify") {
+    input = (
+      <VerifyInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "username") {
+    input = (
+      <UsernameInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  }
+
   return (
     <form className="login-form">
       <div className="header">
         <h4>{flowStep[index].header}</h4>
-        {flowStep[index].description && <p>{flowStep[index].description}</p>}
+        {flowStep[index].description && (
+          <p>
+            {flowStep[index].description}
+            {index === 1 && `${userCountry} ${userPhoneNumber}`}
+          </p>
+        )}
       </div>
       <div className="input-container">
         {/* Input Fields */}
-        <div className="inputs">
-          <Input
-            onChange={flowStep[index].onChange}
-            updateState={setIsFormCompleted}
-            title={flowStep[index].inputTitle}
-            type={flowStep[index].inputType}
-            placeholder={flowStep[index].inputPlaceholder}
-            numbers={flowStep[index].inputLength}
-            country={flowStep[index].country}
-          ></Input>
-        </div>
+        <div className="inputs">{input}</div>
         <p>{flowStep[index].footer}</p>
       </div>
+
       {formError && (
         <p id="register-form-error" className="error-text">
           {formError}

@@ -1,0 +1,84 @@
+.cf42-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+
+    gap: 25px;
+    width: 100%;
+
+    padding: 1em;
+    flex-direction: column;
+
+    opacity: 0.8;
+    background: linear-gradient(180deg, #23262c 15.86%, #212328 100%);
+
+    .header {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+
+        h4 {
+            margin: 0;
+            width: fit-content;
+            text-transform: capitalize;
+
+            font-family: "Geist Mono";
+        }
+
+        p {
+            font-size: 14px;
+            font-family: "Overused Grotesk";
+            width: fit-content;
+            color: #00f45d;
+            text-align: left;
+        }
+    }
+
+    .img-container {
+        display: flex;
+        justify-content: center;
+        align-items: end;
+        width: fit-content;
+        height: 200px;
+        padding-bottom: 1em;
+
+        img {
+            height: 100%;
+            width: fit-content;
+            display: flex;
+            align-items: end;
+        }
+    }
+
+    .cf42-card-notification {
+        position: absolute;
+        background-color: red;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+
+        top: -12.5px;
+        right: -12.5px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        h4 {
+            padding-right: 2px;
+            padding-bottom: 2px;
+        }
+    }
+}
+
+.cf42-card:hover {
+    opacity: 1;
+}
+
+@media (min-width: 768px) {
+    .cf42-card {
+        align-items: end; /* Change to 'end' for desktop */
+        padding-right: 2em;
+    }
+}

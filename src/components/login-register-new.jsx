@@ -1,4 +1,3 @@
-import React from "react";
 import "./login-register-new.css";
 
 import { useState } from "react";
@@ -6,11 +5,17 @@ import { useState } from "react";
 import Card from "./card";
 import LoginForm from "./login-form";
 import RegisterForm from "./register-form";
+import PropTypes from "prop-types";
 
-export default function LoginReigsterNew() {
-  const [activeForm, setActiveForm] = useState("login");
+LoginRegisterNew.propTypes = {
+  _activeForm: PropTypes.string,
+};
+
+export default function LoginRegisterNew({ _activeForm = "login" }) {
+  const [activeForm, setActiveForm] = useState(_activeForm);
   const [pageIndex, setPageIndex] = useState(0);
   const [completedSteps, setCompletedSteps] = useState(0);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const handleTabClick = (form) => {
     setActiveForm(form);
@@ -19,8 +24,12 @@ export default function LoginReigsterNew() {
   };
 
   const handleArrowClick = (step) => {
-    console.log(pageIndex);
-    console.log(completedSteps);
+    /* Edge Case: Account Not Found */
+    if (pageIndex === 2 && completedSteps === 0) {
+      setPageIndex(0);
+      setCompletedSteps(0);
+      return;
+    }
 
     if (pageIndex + step > completedSteps - 1 || pageIndex + step < 0) return;
     setPageIndex(pageIndex + step);
@@ -29,11 +38,18 @@ export default function LoginReigsterNew() {
 
   const handleStepComplete = (step) => {
     if (step === 0) {
-      console.log("ERROR: Step not complete");
+      console.error("ERROR: Step not complete");
     }
 
     setCompletedSteps(completedSteps + 1);
     setPageIndex(pageIndex + 1);
+  };
+
+  const handleSetActiveForm = (form, phone = "") => {
+    setCompletedSteps(0);
+    setPhoneNumber(phone);
+    setActiveForm(form);
+    setPageIndex(1);
   };
 
   return (
@@ -45,11 +61,21 @@ export default function LoginReigsterNew() {
         onArrowClick={handleArrowClick}
         title=""
         pageIndex={pageIndex}
+        activeForm={activeForm}
       >
         {activeForm === "login" ? (
-          <LoginForm index={pageIndex} onStep={handleStepComplete} />
+          <LoginForm
+            index={pageIndex}
+            onStep={handleStepComplete}
+            setActiveForm={handleSetActiveForm}
+            setPageIndex={setPageIndex}
+          />
         ) : (
-          <RegisterForm index={pageIndex} onStep={handleStepComplete} />
+          <RegisterForm
+            index={pageIndex}
+            onStep={handleStepComplete}
+            _userPhoneNumber={phoneNumber}
+          />
         )}
       </Card>
     </div>

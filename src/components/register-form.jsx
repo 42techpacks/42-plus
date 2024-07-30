@@ -1,45 +1,30 @@
 import { useContext, useEffect, useState } from "react";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
-
 import Button from "./button";
-import Input from "./input";
+import PhoneInput from "./phone-input";
+import VerifyInput from "./verify-input";
+import UsernameInput from "./username-input";
+import { registerFormConfig } from "../utils/form-config";
 
-// Loader to prevent user from accessing the register page directly
-// when they have no business doing that
-export async function registerFormLoader() {
-  const {
-    data: { user },
-  } = await supaClient.auth.getUser();
+import PropTypes from "prop-types";
 
-  // user doesn't exist, send them back home
-  if (!user) {
-    return redirect("/");
-  }
+RegisterForm.propTypes = {
+  index: PropTypes.number.isRequired,
+  onStep: PropTypes.func.isRequired,
+  _userPhoneNumber: PropTypes.string,
+};
 
-  // user exists, check if they have a profile
-  const { data } = await supaClient
-    .from("user_profiles")
-    .select("*")
-    .eq("user_id", user?.id)
-    .single();
-
-  // user has a profile, send them back home
-  if (data?.username) {
-    return redirect("/");
-  }
-}
-
-export default function RegisterForm({ index, onStep }) {
-  const navigate = useNavigate();
-
+export default function RegisterForm({
+  index,
+  onStep,
+  _userPhoneNumber = "4077470791",
+}) {
   const userContext = useContext(UserContext);
-  const { refreshProfile } = useContext(UserContext);
   const [isFormCompleted, setIsFormCompleted] = useState(false);
   const [userCountry, setUserCountry] = useState("1");
-  const [createdAt, setCreatedAt] = useState(null)
-  const [userPhoneNumber, setUserPhoneNumber] = useState("407-747-0791");
+  const [userPhoneNumber, setUserPhoneNumber] = useState(_userPhoneNumber);
   const [userOTP, setUserOTP] = useState("123456");
   const [userUsername, setUserUsername] = useState("");
   const [formError, setFormError] = useState(false);
@@ -53,118 +38,90 @@ export default function RegisterForm({ index, onStep }) {
   };
 
   const updateUserUsername = (value) => {
-    console.log(value);
     setUserUsername(value);
   };
 
-  const phoneNumber = {
-    header: "Register with Phone Number.",
-    onChange: (e) => {
-      updateUserPhoneNumber(e.target.value);
+  const flowStep = [
+    {
+      ...registerFormConfig.phoneNumber,
+      onChange: (e) => {
+        updateUserPhoneNumber(e.target.value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user phone number...");
+        supaClient.auth
+          .signInWithOtp({
+            phone: `1${userPhoneNumber}`,
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+            } else {
+              onStep();
+            }
+          });
+      },
     },
-    inputTitle: "Phone Number",
-    inputType: "phone",
-    inputPlaceholder: "4077470791",
-    inputLength: 10,
-    country: true,
-    footer: `Standard messaging rates will apply. View our terms and conditions for more details`,
-    buttonLabel: "SEND CODE",
-    error: "ERROR: Invalid Phone Number",
-    buttonHandler: () => {
-      setFormError("");
-      console.log(userPhoneNumber);
-      console.log("checking user phone number...");
-      supaClient.auth
-        .signInWithOtp({
-          phone: `1${userPhoneNumber}`,
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-          }
-          else {
+    {
+      ...registerFormConfig.otpVerify,
+      onChange: (value) => {
+        updateUserOTP(value);
+      },
+      buttonHandler: () => {
+        setFormError("");
+        console.log("checking user provided OTP...");
+        console.log(userPhoneNumber);
+        console.log(userOTP);
+
+        supaClient.auth
+          .verifyOtp({
+            phone: `1${userPhoneNumber}`,
+            token: userOTP,
+            type: "sms",
+          })
+          .then(({ data, error }) => {
+            if (error) {
+              setFormError(error.message);
+              throw error;
+            }
+            console.log(userContext.session);
+            console.log(`User OTP checked received.. Try again`);
             console.log(data);
             onStep();
-          }
-        });
+          });
+      },
     },
-  };
-
-  const otpVerify = {
-    header: "OTP Verification",
-    onChange: (value) => {
-      updateUserOTP(value);
+    {
+      ...registerFormConfig.personalInfo,
+      onChange: (value) => {
+        updateUserUsername(value);
+      },
+      buttonHandler: () => {
+        console.log("redirecting...");
+        setFormError("");
+        supaClient
+          .from("user_profiles")
+          .insert([
+            {
+              //TODO: handle userContext not existing for whatever reason better
+              user_id: userContext.session?.user.id || "",
+              username: userUsername,
+              phone_number: userContext.session?.user.phone || "",
+              created_at: userContext.session?.user.created_at || "",
+            },
+          ])
+          .then(async ({ error }) => {
+            if (error) {
+              setFormError(error.message);
+              return;
+            } else {
+              await userContext.refreshProfile(userContext.session?.user.id);
+            }
+          });
+      },
     },
-    inputTitle: "OTP Verification",
-    inputType: "verify",
-    inputPlaceholder: "4077470791",
-    inputLength: 6,
-    country: true,
-    footer: ``,
-    buttonLabel: "VERIFY",
-    error: "ERROR: Invalid Verification Code",
-    buttonHandler: () => {
-      setFormError("");
-      console.log("checking user provided OTP...");
-
-      supaClient.auth
-        .verifyOtp({
-          phone: `1${userPhoneNumber}`,
-          token: userOTP,
-          type: "sms",
-        })
-        .then(({ data, error }) => {
-          if (error) {
-            setFormError(error.message);
-            throw error;
-          }
-          console.log(userContext.session)
-          console.log(`User OTP checked received.. Try again`);
-          console.log(data);
-          onStep();
-        });
-    },
-  };
-
-  const personalInfo = {
-    header: "Registration Complete",
-    onChange: (value) => {
-      updateUserUsername(value);
-    },
-    description: "Welcome to 42+. Set your account username below.",
-    inputTitle: "Username",
-    inputType: "username",
-    inputPlaceholder: "npcmilo",
-    inputLength: -1,
-    country: true,
-    footer: ``,
-    buttonLabel: "ENTER 42+",
-    error: "ERROR: Username is already taken",
-    buttonHandler: () => {
-      console.log("redirecting...");
-      setFormError("");
-      supaClient
-        .from("user_profiles")
-        .insert([
-          {
-            //TODO: handle userContext not existing for whatever reason better
-            user_id: userContext.session?.user.id || "",
-            username: userUsername,
-            phone_number: userContext.session?.user.phone || "",
-            created_at: userContext.session?.user.created_at || ""
-          },
-        ])
-        .then(async ({ error }) => {
-          if (error) {
-            setFormError(error.message);
-            return;
-          } else {
-            await refreshProfile(userContext.session?.user.id);
-            navigate("");
-          }
-        });
-    },
-  };
+  ];
 
   useEffect(() => {
     const currentInputLength = flowStep[index].inputLength;
@@ -176,28 +133,55 @@ export default function RegisterForm({ index, onStep }) {
     }
   }, [userPhoneNumber, userOTP, userUsername, index]);
 
-  const flowStep = [phoneNumber, otpVerify, personalInfo];
   const flowValues = [userPhoneNumber, userOTP, userUsername];
 
+  console.log(flowStep);
+  console.log(index);
+
+  let input = <></>;
+  if (flowStep[index].inputType == "phone") {
+    input = (
+      <PhoneInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        updateCountryState={setUserCountry}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "verify") {
+    input = (
+      <VerifyInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  } else if (flowStep[index].inputType == "username") {
+    input = (
+      <UsernameInput
+        onChange={flowStep[index].onChange}
+        updateState={setIsFormCompleted}
+        title={flowStep[index].inputTitle}
+        country={flowStep[index].country}
+      />
+    );
+  }
   return (
     <form className="login-form">
       <div className="header">
         <h4>{flowStep[index].header}</h4>
-        {flowStep[index].description && <p>{flowStep[index].description}</p>}
+        {flowStep[index].description && (
+          <p>
+            {flowStep[index].description}
+            {index === 1 && `${userCountry} ${userPhoneNumber}`}
+          </p>
+        )}
       </div>
       <div className="input-container">
         {/* Input Fields */}
-        <div className="inputs">
-          <Input
-            onChange={flowStep[index].onChange}
-            updateState={setIsFormCompleted}
-            title={flowStep[index].inputTitle}
-            type={flowStep[index].inputType}
-            placeholder={flowStep[index].inputPlaceholder}
-            numbers={flowStep[index].inputLength}
-            country={flowStep[index].country}
-          ></Input>
-        </div>
+        <div className="inputs"> {input} </div>
         <p>
           {flowStep[index].footer}
           {flowStep[index].link}
