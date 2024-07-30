@@ -21,6 +21,15 @@ brew tap oven-sh/bun
 brew install bun
 ```
 
+### Setup git diffing of bun's lockfile
+
+[source](https://bun.sh/docs/install/lockfile)
+
+```bash
+git config diff.lockb.textconv bun
+git config diff.lockb.binary true
+```
+
 ### Install orbstack
 
 ```bash
@@ -42,7 +51,9 @@ bun run dev
 ```
 
 ### Supabase Workflow
+
 Set up some necessary env variables
+
 ```bash
 # for supabase sms
 export SUPABASE_AUTH_SMS_TWILIO_ACCOUNT_SID <get value from kenny (or notion if he stops being lazy)>
@@ -53,6 +64,7 @@ export SUPABASE_AUTH_SMS_TWILIO_SERVICE_SID <value>
 ```
 
 Commands
+
 ```bash
 # to start the local supabase instance
 bunx supabase start
