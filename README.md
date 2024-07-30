@@ -43,6 +43,19 @@ brew install --cask orbstack
 
 # Install the dependencies
 bun install
+
+# ENV variable for analytics (post hog)
+set -Ux VITE_POSTHOG_API_KEY <insert_key_here>
+
+# ENV variables needed for OTP
+# NOTE: there is a code block you can copy and paste in notion to set up these
+# env vars
+set -Ux SUPABASE_AUTH_SMS_TWILIO_ACCOUNT_SID
+
+set -Ux SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN <value>
+
+set -Ux SUPABASE_AUTH_SMS_TWILIO_SERVICE_SID <value>
+
 # Start supabase locally
 bunx supabase start
 
@@ -52,20 +65,9 @@ bun run dev
 
 ### Supabase Workflow
 
-Set up some necessary env variables
+Useful Commands
 
-```bash
-# for supabase sms
-export SUPABASE_AUTH_SMS_TWILIO_ACCOUNT_SID <get value from kenny (or notion if he stops being lazy)>
-
-export SUPABASE_AUTH_SMS_TWILIO_AUTH_TOKEN <value>
-
-export SUPABASE_AUTH_SMS_TWILIO_SERVICE_SID <value>
-```
-
-Commands
-
-```bash
+```fish
 # to start the local supabase instance
 bunx supabase start
 
@@ -80,14 +82,15 @@ bunx supabase stop
 
 # to generate typing
 bunx supabase gen types typescript --local > ./src/database.types.ts
+
+# to back up database
+pg_dump 'postgresql://postgres.<project-url:<password>@aws-0-us-east-1.pooler.supabase.com:6543/postgres' > <file name>
 ```
-
-
 
 ## Setup Posthog
 
 ```fish
-set -Ux VITE_POSTHOG_API_KEY <insert_key_here>
+
 ```
 
 Url to access local supabase server
