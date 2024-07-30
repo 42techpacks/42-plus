@@ -11,10 +11,10 @@ export default function Home() {
   const userProfile = useContext(UserContext);
   return (
     <>
-      {true ? (
+      {userProfile.profile ? (
         <div className="home">
           <BetaMiniSite />
-          <CF42MiniSite />
+          {/* <CF42MiniSite /> */}
         </div>
       ) : (
         <LoginRegisterNew />
