@@ -82,6 +82,14 @@ bunx supabase stop
 bunx supabase gen types typescript --local > ./src/database.types.ts
 ```
 
+
+
+## Setup Posthog
+
+```fish
+set -Ux VITE_POSTHOG_API_KEY <insert_key_here>
+```
+
 Url to access local supabase server
 [http://localhost:54323](http://localhost:54323)
 
