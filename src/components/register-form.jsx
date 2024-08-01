@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { UserContext } from "../App";
 import { supaClient } from "../supa-client";
 import Button from "./button";
@@ -107,13 +106,16 @@ export default function RegisterForm({
               //TODO: handle userContext not existing for whatever reason better
               user_id: userContext.session?.user.id || "",
               username: userUsername,
-              phone_number: userContext.session?.user.phone || "",
               created_at: userContext.session?.user.created_at || "",
             },
           ])
           .then(async ({ error }) => {
             if (error) {
-              setFormError(error.message);
+              if (error.code === "23505") {
+                setFormError("ERROR: Username is already taken");
+              } else {
+                setFormError(error.message);
+              }
               return;
             } else {
               await userContext.refreshProfile(userContext.session?.user.id);
@@ -134,9 +136,6 @@ export default function RegisterForm({
   }, [userPhoneNumber, userOTP, userUsername, index]);
 
   const flowValues = [userPhoneNumber, userOTP, userUsername];
-
-  console.log(flowStep);
-  console.log(index);
 
   let input = <></>;
   if (flowStep[index].inputType == "phone") {
@@ -189,7 +188,7 @@ export default function RegisterForm({
       </div>
       {formError && (
         <p id="register-form-error" className="error-text">
-          {flowStep[index].error}
+          {formError}
         </p>
       )}
       <Button

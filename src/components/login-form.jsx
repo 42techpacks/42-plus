@@ -84,10 +84,10 @@ export default function LoginForm({
           })
           .then(({ data, error }) => {
             if (error) {
-              console.error(error);
               if (error.message === "Signups not allowed for otp") {
                 setPageIndex(2); //change to account not found view
               } else {
+                console.error(error);
                 setFormError(error.message);
               }
             } else {
