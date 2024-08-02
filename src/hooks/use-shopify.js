@@ -42,14 +42,14 @@ function useShopify() {
    * @returns {Promise<Object>} - A promise that resolves to the checkout object containing the checkout ID and web URL.
    * @throws {Error} - Throws an error if the checkout creation fails.
    */
-  const createCheckoutURL = async (variantId, quantity, redirectUrl) => {
+  const createCart = async (variantId, quantity, redirectUrl) => {
     const result = await executeQuery(CREATE_CART_MUTATION, {
       input: {
         lines: [{ merchandiseId: variantId, quantity }],
         attributes: [{ key: "cart_redirect_url", value: redirectUrl }],
       },
     });
-    return result?.cartCreate?.cart?.checkoutUrl;
+    return result?.cartCreate?.cart;
   };
 
   const addToCart = (cartId, variantId, quantity) =>
@@ -69,7 +69,7 @@ function useShopify() {
       fetchProducts,
     },
     mutations: {
-      createCheckoutURL,
+      createCart,
       addToCart,
       removeFromCart,
     },
