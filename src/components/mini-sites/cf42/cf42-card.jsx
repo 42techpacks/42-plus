@@ -9,9 +9,10 @@ export default function CF42Card({
   img,
   onClick,
   children,
+  addClass,
 }) {
   return (
-    <div className="cf42-card">
+    <div className={`cf42-card ${addClass}`} onClick={onClick}>
       {notifications > 0 && (
         <div className="cf42-card-notification">
           <h4>{notifications}</h4>

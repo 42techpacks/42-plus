@@ -1,0 +1,16 @@
+.browse-packs {
+    width: 100%;
+    display: flex;
+
+    .browse-packs-card {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 500px;
+
+        .header,
+        .img-container {
+            display: none;
+        }
+    }
+}

@@ -5,79 +5,53 @@ import ShopifyBuyButton from "../../mini-site-components/shopify-buy-button/shop
 import CF42Card from "./cf42-card";
 import Enter from "./enter/enter";
 import Button from "../../button";
+import CF42Store from "./cf42-store";
+import CF42Nav from "./cf42-nav";
+import CF42NavMini from "./cf42-nav-mini";
+import CF42MainMenu from "./cf42-main-menu";
+import CF42PackStore from "./cf42-pack-store";
 
 export default function CF42MiniSite() {
   const [activePage, setActivePage] = useState("enter");
+  const [subPage, setSubPage] = useState(false);
 
   const handleNavClick = (page) => {
     console.log("CF42 Nav item clicked..." + page);
     setActivePage(page);
+
     const pages = document.querySelectorAll(".cf42-nav-item");
     pages.forEach((p) => p.classList.remove("selected"));
     document.querySelector(`.cf42-nav-${page}`).classList.add("selected");
   };
 
-  const home = (
-    <>
-      <CF42Card
-        notifications={0}
-        title={"FEATURED ITEM"}
-        subtitle={"Available NOW!"}
-        img={"/knit-arg-jersey-item-card.svg"}
-      ></CF42Card>
-      <CF42Card
-        notifications={0}
-        title={"INSTRUCTIONS"}
-        subtitle={"Learn how to use CF42."}
-        img={"/info-icon.svg"}
-      ></CF42Card>
-    </>
-  );
-
-  const store = (
-    <>
-      <CF42Card
-        notifications={1}
-        title={"BROWSE PACKS"}
-        subtitle={"Available NOW!"}
-        img={"/gold-pack.svg"}
-      ></CF42Card>
-      <CF42Card
-        notifications={0}
-        title={"ORDER HISTORY"}
-        subtitle={"View previously purchased packs and owned items."}
-        img={"/info-icon.svg"}
-      ></CF42Card>
-    </>
-  );
-
   return (
     <div className="cf42-mini-site">
-      {" "}
       <Card title="CF42" url={"CF42.exe"}>
-        {activePage !== "enter" && (
-          <div className="cf42-nav">
-            <a
-              className="cf42-nav-item cf42-nav-home selected"
-              onClick={() => handleNavClick("home")}
-            >
-              Home
-            </a>
-            <a
-              className="cf42-nav-item cf42-nav-store"
-              onClick={() => handleNavClick("store")}
-            >
-              Store
-            </a>
-          </div>
-        )}
+        {/* Display header nav upon 'launching' app */}
+        {activePage !== "enter" &&
+          (subPage ? (
+            subPage === "pack-store" && (
+              <CF42PackStore
+                exitFn={() => {
+                  setSubPage(false);
+                  handleNavClick("store");
+                }}
+              />
+            )
+          ) : (
+            <CF42MainMenu
+              handleNavClick={handleNavClick}
+              setSubPage={setSubPage}
+              activeMenu={activePage}
+            />
+          ))}
+
+        {/* 'ENTER' Component displayed upon load */}
         {activePage === "enter" && (
           <Enter>
             <Button label="START GAME" onClick={() => handleNavClick("home")} />
           </Enter>
         )}
-        {activePage === "home" && home}
-        {activePage === "store" && store}
       </Card>
     </div>
   );
