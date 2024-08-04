@@ -41,15 +41,12 @@ Deno.serve(async (req) => {
       const order_id_and_key = `${cart_token}?key=${last_cart_key}`;
       // we don't await this, if it fails, it fails
 
-      const resp = await supaClient
-        .from("user_orders")
-        .insert([
-          {
-            user_id: user_id,
-            shopify_order_id_and_key: order_id_and_key,
-          },
-        ])
-        .select();
+      const resp = await supaClient.from("user_orders").insert([
+        {
+          user_id: user_id,
+          shopify_order_id_and_key: order_id_and_key,
+        },
+      ]);
       console.log(resp);
     } else {
       return new Response(
