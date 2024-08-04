@@ -30,9 +30,11 @@ export default function ShopifyBuyButton({ variantId }) {
       const redirectUrl = `${window.location.origin}/store/packs/animation`;
 
       const cart = await mutations.createCart(variantId, 1, redirectUrl);
+      const id_key_pair = cart.id?.split('?key=');
+      console.log(id_key_pair)
       supaClient
         .from("user_profiles")
-        .update({ last_cart_id: cart?.id })
+        .update({ last_cart_id: id_key_pair[0], last_cart_key: id_key_pair[1]})
         .eq("user_id", user.session.user.id)
         .then(({ error }) => {
           if (error) {
